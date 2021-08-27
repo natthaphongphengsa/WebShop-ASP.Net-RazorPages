@@ -6,28 +6,27 @@
 @if (Model.SeachInput == null)
 {
     <h1>Kunde inte hitta!</h1>
+    <h2>Du har inte skrivit in någon text i sökrutan!!!</h2>
 }
 else
 {
-    <h1>Du sökte på @Model.SeachInput</h1>
-}
-
-<div class="container">
-    <div class="row justify-content-lg-end">
-        <form method="post" asp-route-search="@Model.SeachInput">
-            <select name="id" asp-for="selectedFilter" onchange="this.form.submit()" class="form-select form-control m-md-4" aria-label="Default select example" asp-items="@Model.FilterList">
-            </select>
-        </form>
-        @*<form method="post" asp-route-search="@Model.SeachInput">
-                <select name="id" class="form-select form-control m-md-4" onchange="this.form.submit()" aria-label="Default select example">
-                    <option selected="selected" value="0">Filter</option>
-                    <option value="1">Billigast först</option>
-                    <option value="2">Dyraste först</option>
-                    <option value="3">Bokstav ordning</option>
-                </select>
-            </form>*@
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-4">
+                <h3 class="p-4">
+                    Du sökte:
+                    <button type="button" class="btn btn-light">@Model.SeachInput</button>
+                </h3>
+            </div>
+            <div class="col-4">
+                <form method="post" asp-route-search="@Model.SeachInput">
+                    <select name="id" asp-for="selectedFilter" onchange="this.form.submit()" class="form-select form-control m-md-4" aria-label="Default select example" asp-items="@Model.FilterList">
+                    </select>
+                </form>
+            </div>
+        </div>
     </div>
-</div>
+}
 <div class="row">
     @foreach (var item in Model.products)
     {

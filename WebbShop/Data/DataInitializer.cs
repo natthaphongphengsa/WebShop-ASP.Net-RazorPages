@@ -62,26 +62,7 @@ namespace WebbShop.Data
             }
         }
         public static void SeedAdmin(ApplicationDbContext dbContext)
-        {
-            if (!dbContext.role.Any(r => r.Name == "Admin"))
-            {
-                dbContext.role.Add(new Role() { Name = "Admin" });
-                dbContext.role.Add(new Role() { Name = "Customer" });
-            }
-
-            if (!dbContext.user.Any(u => u.UserName == "Admin"))
-            {
-                dbContext.user.Add(new User()
-                {
-                    UserName = "Admin",
-                    Email = "Admin@hotmail.com",
-                    Image = "Picture/adminIcon.png",
-                    PassWord = "Admin123@",
-                    
-                });
-            }
-
-            
+        {            
         }
     }
 }
