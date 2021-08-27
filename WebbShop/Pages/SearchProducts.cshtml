@@ -1,0 +1,50 @@
+﻿@page
+@model WebbShop.Pages.SearchProductsModel
+@{
+    ViewData["Title"] = Model.SeachInput;
+}
+@if (Model.SeachInput == null)
+{
+    <h1>Kunde inte hitta!</h1>
+}
+else
+{
+    <h1>Du sökte på @Model.SeachInput</h1>
+}
+
+<div class="container">
+    <div class="row justify-content-lg-end">
+        <form method="post" asp-route-search="@Model.SeachInput">
+            <select name="id" asp-for="selectedFilter" onchange="this.form.submit()" class="form-select form-control m-md-4" aria-label="Default select example" asp-items="@Model.FilterList">
+            </select>
+        </form>
+        @*<form method="post" asp-route-search="@Model.SeachInput">
+                <select name="id" class="form-select form-control m-md-4" onchange="this.form.submit()" aria-label="Default select example">
+                    <option selected="selected" value="0">Filter</option>
+                    <option value="1">Billigast först</option>
+                    <option value="2">Dyraste först</option>
+                    <option value="3">Bokstav ordning</option>
+                </select>
+            </form>*@
+    </div>
+</div>
+<div class="row">
+    @foreach (var item in Model.products)
+    {
+        <div class="column col-md-3 p-3">
+            <a asp-page="/ProductDetail" asp-route-id="@item.Id" class="btn btn" style="max-height:500px; min-height:500px">
+                <div class="text-center p-4" style="height:250px;">
+                    <div class="d-flex justify-content-center">
+                        <img src="@item.Image" style="width:70%;" alt="@item.Image">
+                    </div>
+                </div>
+                <div class="text-left p-2" style="min-height:150px; max-height:200px">
+                    <p class="card-title">@item.Name</p>
+                </div>
+                <div class="text-right p-2">
+                    <p class="card-text font-weight-bold">@item.Price kr</p>
+                </div>
+            </a>
+        </div>
+    }
+</div>

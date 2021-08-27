@@ -1,0 +1,26 @@
+﻿@page
+@model WebShop.Pages.CategoryModel
+@{
+    ViewData["Title"] = Model.CategoryName;
+}
+<h1>Kategori: @Model.CategoryName</h1>
+<div class="row">
+    @foreach (var item in Model.products)
+    {
+        <div class="column col-md-3 p-3">
+            <a asp-page="/ProductDetail" asp-route-id="@item.Id" class="btn btn" style="max-height:500px; min-height:500px">
+                <div class="text-center p-4" style="height:250px;">
+                    <div class="d-flex justify-content-center">
+                        <img src="@item.Image" style="width:70%;" alt="@item.Image">
+                    </div>
+                </div>
+                <div class="text-left p-2" style="min-height:150px; max-height:200px">
+                    <p class="card-title">@item.Name</p>
+                </div>
+                <div class="text-right p-2">
+                    <p class="card-text font-weight-bold">@item.Price kr</p>
+                </div>
+            </a>
+        </div>
+    }
+</div>

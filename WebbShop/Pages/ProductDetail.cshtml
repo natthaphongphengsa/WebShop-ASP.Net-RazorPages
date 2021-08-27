@@ -1,0 +1,29 @@
+﻿@page
+@model WebbShop.Pages.ProductDetailModel
+@{
+    ViewData["Title"] = "Produkt";
+}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>@Model.Name</h3>
+            <div class="card-img">
+                <img src="@Model.Image" style="width:20%;" />
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-text text-right">
+                <b style="font-size:18px;">@Model.Price kr</b>
+            </div>
+        </div>
+        <div class="row">
+            <div class="align-self-start">
+                <div class="col">
+                    <h3>Description</h3>
+                    <p>@Model.Description</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<a asp-page="/Category" asp-route-id="@Model.Category.Id">@Model.Category.Name</a>*@
+</div>

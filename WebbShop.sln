@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31613.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebbShop", "WebbShop\WebbShop.csproj", "{75124F29-7C81-4DAB-AF90-D8D3C71041BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75124F29-7C81-4DAB-AF90-D8D3C71041BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75124F29-7C81-4DAB-AF90-D8D3C71041BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75124F29-7C81-4DAB-AF90-D8D3C71041BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75124F29-7C81-4DAB-AF90-D8D3C71041BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {626F2EF1-B450-4279-A12D-6829DBED0E48}
+	EndGlobalSection
+EndGlobal
