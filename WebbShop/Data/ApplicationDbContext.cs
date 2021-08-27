@@ -15,5 +15,7 @@ namespace WebbShop.Data
         }
         public DbSet<Product> product { get; set; }
         public DbSet<Category> category { get; set; }
+        public DbSet<User> user { get; set; }
+        public DbSet<Role> role { get; set; }
     }
 }

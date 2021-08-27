@@ -61,34 +61,27 @@ namespace WebbShop.Data
                 }
             }
         }
-        public static void SeedAdminAsync(ApplicationDbContext dbContext)
+        public static void SeedAdmin(ApplicationDbContext dbContext)
         {
-            //var user = new User
-            //{
-            //    UserName = "Admin@outlook.com",
-            //    NormalizedUserName = "ADMIN@OUTLOOK.COM",
-            //    Email = "Admin@outlook.com",
-            //    NormalizedEmail = "ADMIN@OUTLOOK.COM",
-            //    EmailConfirmed = true,              
-            //};
-            
-            //if (!dbContext.Roles.Any(r => r.Name == "admin"))
-            //{
-            //    var store = new RoleStore<IdentityRole>(dbContext);                
-            //    var role = new IdentityRole("Admin");
-            //}
-            //if (!dbContext.Roles.Any(c => c.Name == "Admin"))
-            //{
-            //    dbContext.Roles.Add(new Microsoft.AspNetCore.Identity.IdentityRole("Admin"));                
-            //}
-            //var role = dbContext.Roles.First(c => c.Name == "Admin");
-            //var user = dbContext.Users.First(c => c.UserName == "Natthaphong@hotmail.com");
-            //if (!dbContext.UserRoles.Any(r => r.UserId == user.Id))
-            //{
-            //    dbContext.UserRoles.Add(new Microsoft.AspNetCore.Identity.IdentityUserRole<string>() { RoleId = role.Id, UserId = user.Id });
-            //}
+            if (!dbContext.role.Any(r => r.Name == "Admin"))
+            {
+                dbContext.role.Add(new Role() { Name = "Admin" });
+                dbContext.role.Add(new Role() { Name = "Customer" });
+            }
 
-            //dbContext.SaveChanges();
+            if (!dbContext.user.Any(u => u.UserName == "Admin"))
+            {
+                dbContext.user.Add(new User()
+                {
+                    UserName = "Admin",
+                    Email = "Admin@hotmail.com",
+                    Image = "Picture/adminIcon.png",
+                    PassWord = "Admin123@",
+                    
+                });
+            }
+
+            
         }
     }
 }

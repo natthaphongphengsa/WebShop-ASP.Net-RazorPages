@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebbShop.Data;
 
 namespace WebbShop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210827193107_FixForeingKey2")]
+    partial class FixForeingKey2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,7 +21,7 @@ namespace WebbShop.Migrations
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("RoleUser", b =>
+            modelBuilder.Entity("RolesUser", b =>
                 {
                     b.Property<int>("roleId")
                         .HasColumnType("int");
@@ -31,7 +33,7 @@ namespace WebbShop.Migrations
 
                     b.HasIndex("userId");
 
-                    b.ToTable("RoleUser");
+                    b.ToTable("RolesUser");
                 });
 
             modelBuilder.Entity("WebbShop.Models.Category", b =>
@@ -78,7 +80,7 @@ namespace WebbShop.Migrations
                     b.ToTable("product");
                 });
 
-            modelBuilder.Entity("WebbShop.Models.Role", b =>
+            modelBuilder.Entity("WebbShop.Models.Roles", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,9 +101,6 @@ namespace WebbShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("ConfirmPassword")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -129,9 +128,9 @@ namespace WebbShop.Migrations
                     b.ToTable("user");
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
+            modelBuilder.Entity("RolesUser", b =>
                 {
-                    b.HasOne("WebbShop.Models.Role", null)
+                    b.HasOne("WebbShop.Models.Roles", null)
                         .WithMany()
                         .HasForeignKey("roleId")
                         .OnDelete(DeleteBehavior.Cascade)

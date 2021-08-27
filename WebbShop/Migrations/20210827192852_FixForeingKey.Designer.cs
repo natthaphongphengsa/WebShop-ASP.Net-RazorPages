@@ -3,36 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebbShop.Data;
 
 namespace WebbShop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210827192852_FixForeingKey")]
+    partial class FixForeingKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.Property<int>("roleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("userId")
-                        .HasColumnType("int");
-
-                    b.HasKey("roleId", "userId");
-
-                    b.HasIndex("userId");
-
-                    b.ToTable("RoleUser");
-                });
 
             modelBuilder.Entity("WebbShop.Models.Category", b =>
                 {
@@ -78,7 +65,7 @@ namespace WebbShop.Migrations
                     b.ToTable("product");
                 });
 
-            modelBuilder.Entity("WebbShop.Models.Role", b =>
+            modelBuilder.Entity("WebbShop.Models.Roles", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -88,7 +75,12 @@ namespace WebbShop.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("role");
                 });
@@ -99,9 +91,6 @@ namespace WebbShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("ConfirmPassword")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -129,21 +118,6 @@ namespace WebbShop.Migrations
                     b.ToTable("user");
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.HasOne("WebbShop.Models.Role", null)
-                        .WithMany()
-                        .HasForeignKey("roleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebbShop.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("WebbShop.Models.Product", b =>
                 {
                     b.HasOne("WebbShop.Models.Category", "Category")
@@ -153,9 +127,21 @@ namespace WebbShop.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("WebbShop.Models.Roles", b =>
+                {
+                    b.HasOne("WebbShop.Models.User", null)
+                        .WithMany("role")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("WebbShop.Models.Category", b =>
                 {
                     b.Navigation("products");
+                });
+
+            modelBuilder.Entity("WebbShop.Models.User", b =>
+                {
+                    b.Navigation("role");
                 });
 #pragma warning restore 612, 618
         }
