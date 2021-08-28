@@ -5,8 +5,8 @@
 }
 @if (Model.SeachInput == null)
 {
-    <h1>Kunde inte hitta!</h1>
-    <h2>Du har inte skrivit in någon text i sökrutan!!!</h2>
+    <h1>Could not found anything!</h1>
+    <h2>You have not entered any text in the search box!!!</h2>
 }
 else
 {
@@ -14,7 +14,7 @@ else
         <div class="row justify-content-between">
             <div class="col-4">
                 <h3 class="p-4">
-                    Du sökte:
+                    You are looking for:
                     <button type="button" class="btn btn-light">@Model.SeachInput</button>
                 </h3>
             </div>

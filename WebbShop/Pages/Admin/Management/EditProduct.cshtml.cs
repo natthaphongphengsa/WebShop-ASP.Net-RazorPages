@@ -61,7 +61,25 @@ namespace WebbShop.Pages.Admin.Management
             //string filename = Path.GetFileNameWithoutExtension(GetImageFileName);
             //string extension = Path.GetExtension(GetImageFileName);
             //ImagePath = "~/Image/" + filename;
-
+            var newFileName = "";
+            if (Bild is not null)
+            {
+                var fileName = Path.GetFileName(Bild.FileName);
+                var fileExtension = Path.GetExtension(fileName);
+                newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
+                //var imagefile = new ImageStore()
+                //{
+                //    Name = newFileName,
+                //    Filtype = fileExtension,
+                //};
+                using (var target = new MemoryStream())
+                {
+                    Bild.CopyTo(target);
+                }
+            }
+            else
+            {
+            }
             if (ModelState.IsValid)
             {
                 var updateproduct = _dbContext.product.First(p => p.Id == id);
@@ -70,9 +88,10 @@ namespace WebbShop.Pages.Admin.Management
                 updateproduct.Price = Price;
                 if (Image != Bild.FileName)
                 {
-                    updateproduct.Image = Bild.FileName;                    
+                    updateproduct.Image = newFileName;                    
                 }
                 updateproduct.Category = _dbContext.category.First(c => c.Id == SelectedCategoryId);
+                _dbContext.product.Update(updateproduct);
                 _dbContext.SaveChanges();
                 return RedirectToPage("/Admin/AdminPage");
             }

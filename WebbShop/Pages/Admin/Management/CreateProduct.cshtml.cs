@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,9 +20,12 @@ namespace WebbShop.Pages.Admin.Management
     public class CreateProductModel : PageModel
     {
         public readonly ApplicationDbContext _dbContext;
-        public CreateProductModel(ApplicationDbContext dbContext)
+        private readonly IHostingEnvironment ihostingEnvironment;
+
+        public CreateProductModel(ApplicationDbContext dbContext, IHostingEnvironment ihostingEnvironment)
         {
             _dbContext = dbContext;
+            this.ihostingEnvironment = ihostingEnvironment;
         }
         public int Id { get; set; }
         [Required]
@@ -37,6 +42,7 @@ namespace WebbShop.Pages.Admin.Management
         public List<SelectListItem> Category { get; set; }
         private List<Category> categories { get; set; } = new List<Category>();
 
+        public string FileName { get; set; }
         public void OnGet()
         {
             Category = _dbContext.category.Select(c => new SelectListItem()
@@ -48,13 +54,32 @@ namespace WebbShop.Pages.Admin.Management
         public IActionResult OnPost()
         {
             OnGet();
+            var newFileName = "";
+            if (Bild is not null)
+            {
+                var fileName = Path.GetFileName(Bild.FileName);
+                var fileExtension = Path.GetExtension(fileName);
+                newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
+                //var imagefile = new ImageStore()
+                //{
+                //    Name = newFileName,
+                //    Filtype = fileExtension,
+                //};
+                using (var target = new MemoryStream())
+                {
+                    Bild.CopyTo(target);
+                }
+            }
+            else
+            {
+            }
             if (ModelState.IsValid)
             {
                 _dbContext.product.Add(new Product() 
                 {
                     Name = Name,
                     Description = Description,
-                    Image = Bild.FileName,
+                    Image = newFileName,
                     Price = Price,
                     Category = _dbContext.category.First(c => c.Id == SelectedCategoryId)
                 });

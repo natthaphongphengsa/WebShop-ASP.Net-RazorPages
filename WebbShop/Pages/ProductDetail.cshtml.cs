@@ -19,14 +19,16 @@ namespace WebbShop.Pages
         public Category Category { get; set; }
 
         public readonly ApplicationDbContext _dbContext;
-
         public ProductDetailModel(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
+        public List<Category> categories = new List<Category>();
+
         public void OnGet(int id)
         {
+            categories = _dbContext.category.ToList();
             var item = _dbContext.product.FirstOrDefault(c => c.Id == id);
             Name = item.Name;
             Description = item.Description;

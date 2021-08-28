@@ -25,11 +25,11 @@ namespace WebbShop.Pages.Admin
             products = _dbContext.product.ToList();
         }
         public void OnPost(int id)
-        {
-            OnGet();
+        {            
             var product = _dbContext.product.First(c => c.Id == id);
             _dbContext.product.Remove(product);
             _dbContext.SaveChanges();
+            OnGet();
         }
     }
 }

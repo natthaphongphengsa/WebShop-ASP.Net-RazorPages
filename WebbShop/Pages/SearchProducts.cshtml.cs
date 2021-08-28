@@ -37,9 +37,9 @@ namespace WebbShop.Pages
         {
             SeachInput = search;
             selectedFilter = id;
-            FilterList.Add(new SelectListItem() { Text = "Billigast först", Value = "0", });
-            FilterList.Add(new SelectListItem() { Text = "Dyraste först", Value = "1", });
-            FilterList.Add(new SelectListItem() { Text = "Bokstavsordning", Value = "2", });
+            FilterList.Add(new SelectListItem() { Text = "Low price first", Value = "0", });
+            FilterList.Add(new SelectListItem() { Text = "High price first", Value = "1", });
+            FilterList.Add(new SelectListItem() { Text = "Alphabetical order", Value = "2", });
             switch (id)
             {
                 case 0:
