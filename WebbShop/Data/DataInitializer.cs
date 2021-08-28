@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebbShop.Data;
 using WebbShop.Models;
+using WebbShop.ViewModels;
 
 namespace WebbShop.Data
 {
@@ -18,7 +19,7 @@ namespace WebbShop.Data
         public static void SeedData(ApplicationDbContext dbContext)
         {
             dbContext.Database.Migrate();
-            //SeedAdmin(dbContext);
+            SeedAdminAsync(dbContext);
             //SeedCategory(dbContext);
             //SeedProducts(dbContext);
         }
@@ -61,8 +62,43 @@ namespace WebbShop.Data
                 }
             }
         }
-        public static void SeedAdmin(ApplicationDbContext dbContext)
-        {            
+        public static async Task SeedAdminAsync(ApplicationDbContext dbContext)
+        {
+            var Admin = new IdentityUser()
+            {
+                UserName = "Admin@hotmail.com",
+                NormalizedUserName = "ADMIN@HOTMAIL.COM",
+                NormalizedEmail = "ADMIN@HOTMAIL.COM",
+                Email = "Admin@hotmail.com",
+                EmailConfirmed = true,
+                LockoutEnabled = false,
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+            var rolstore = new RoleStore<IdentityRole>(dbContext);
+            if (!dbContext.Roles.Any(r => r.Name == "Admin"))
+            {
+                await rolstore.CreateAsync(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" });
+            }
+            if (!dbContext.Roles.Any(r => r.Name == "Customer"))
+            {
+                await rolstore.CreateAsync(new IdentityRole { Name = "Customer", NormalizedName = "CUSTOMER" });
+            }
+
+            if (!dbContext.Users.Any(u => u.UserName == Admin.UserName))
+            {
+                var password = new PasswordHasher<IdentityUser>();
+                var hashed = password.HashPassword(Admin, "Admin@");
+                Admin.PasswordHash = hashed;
+
+                dbContext.Users.Add(Admin);
+                var UserRole = new IdentityUserRole<string>() 
+                {
+                    RoleId = dbContext.Roles.First( c=> c.Name == "Admin").Id,
+                    UserId = Admin.Id
+                };
+                dbContext.UserRoles.Add(UserRole);
+            }
+            dbContext.SaveChanges();
         }
     }
 }

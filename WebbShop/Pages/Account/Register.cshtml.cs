@@ -5,19 +5,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using WebbShop.Data;
 using WebbShop.ViewModels;
 
 namespace WebbShop.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
-
         [BindProperty]
         public Register Registermodel { get; set; }
 
-        public RegisterModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
+        public readonly ApplicationDbContext _dbContext;
+
+        public RegisterModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ApplicationDbContext dbContext)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -29,16 +31,29 @@ namespace WebbShop.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser()
+                var Customer = new IdentityUser()
                 {
                     UserName = Registermodel.EmailAddress,
-                    Email = Registermodel.EmailAddress,
-
+                    Email = Registermodel.EmailAddress,                    
                 };
-                var result = await userManager.CreateAsync(user, Registermodel.Password);
+                if (!_dbContext.Users.Any(u => u.UserName == Customer.UserName))
+                {
+                    var password = new PasswordHasher<IdentityUser>();
+                    var hashed = password.HashPassword(Customer, Registermodel.Password);
+                    Customer.PasswordHash = hashed;
+
+                    _dbContext.Users.Add(Customer);
+                    var UserRole = new IdentityUserRole<string>()
+                    {
+                        RoleId = _dbContext.Roles.First(c => c.Name == "Customer").Id,
+                        UserId = Customer.Id
+                    };
+                    _dbContext.UserRoles.Add(UserRole);
+                }
+                var result = await userManager.CreateAsync(Customer, Customer.PasswordHash);
                 if (result.Succeeded)
                 {
-                    await signInManager.SignInAsync(user, false);
+                    await signInManager.SignInAsync(Customer, false);
                     return RedirectToPage("/Index");
                 }
                 else

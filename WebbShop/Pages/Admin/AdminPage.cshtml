@@ -1,4 +1,49 @@
 ﻿@page
 @model WebbShop.Pages.Admin.AdminPageModel
 @{
+    ViewData["Title"] = "Admin";
 }
+<h1>Hello @User.Identity.Name</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Image</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.products)
+        {
+            <tr>
+                <th scope="row">@item.Id</th>
+                <td>
+                    <a asp-page="/ProductDetail" asp-route-id="@item.Id" class="btn btn">
+                        <img src="@item.Image" alt="@item.Name" style="width:100%;" />
+                    </a>
+                </td>
+                <td>@item.Description</td>
+                <td>@item.Price</td>
+                <td>
+                    <a asp-page="/Admin/Management/EditProduct" asp-route-id="@item.Id" class="btn btn-success">Edit</a>
+                </td>
+                <td>
+                    <form method="post">
+                        <button type="submit" name="id" value="@item.Id" Onclick="DeleteClicked()" class="btn btn-danger">Radera</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    function DeleteClicked() {
+        var r = confirm("Are you sure?");
+        if (r == true) {
+            return window.location.href = "/Admin/AdminPage";
+        }
+    }
+</script>

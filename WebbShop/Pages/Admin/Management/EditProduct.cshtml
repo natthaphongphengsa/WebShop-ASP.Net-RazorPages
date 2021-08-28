@@ -1,0 +1,47 @@
+﻿@page
+@model WebbShop.Pages.Admin.Management.EditProductModel
+@{
+    ViewData["Title"] = "Edit Product";
+}
+<form method="post" asp-route-id="@Model.Id" enctype="multipart/form-data">
+    <div class="form-group">
+        <span asp-validation-for="Name" class="text-danger"></span>
+        <label for="exampleInputEmail1" class="form-label mt-4 font-weight-bold">Title</label>
+        <input asp-for="Name" type="text" class="form-control mt-4">
+
+        <span asp-validation-for="Description" class="text-danger"></span>
+        <label for="exampleInputEmail1" class="form-label mt-4 font-weight-bold">Description</label>
+        <textarea asp-for="Description" textarea cols="80" rows="5" class="form-control"></textarea>
+
+        <span asp-validation-for="Price" class="text-danger"></span>
+        <label for="exampleInputEmail1" class="form-label mt-4 font-weight-bold">Price</label>
+        <input asp-for="Price" type="text" class="form-control">
+
+        <span asp-validation-for="Category" class="text-danger"></span>
+        <label for="exampleInputEmail1" class="form-label mt-4 font-weight-bold">Category</label>
+        <select asp-for="SelectedCategoryId" class="form-select form-control mt-4" aria-label="Default select example" asp-items="@Model.Category">
+            @*<option selected>@Model.SelectedCategory</option>*@
+        </select>
+
+        <label class="form-label mt-4 font-weight-bold">Existerande bild</label>
+        <img src="@Model.Image" class="w-25 p-3" />
+        <input asp-for="Bild" class="form-control" style="padding:3px;" type="file" id="formFile" />
+
+        <button type="submit" onclick="SaveClicked(1)" class="btn btn-primary mt-4">Save</button>
+        <button type="button" Onclick="SaveClicked(2)" class="btn btn-primary mt-4">Cancel</button>
+    </div>
+</form>
+<script>
+    function SaveClicked(id) {
+        if (id == 1) {
+            alert("Your product is now updated")
+            return window.location.href = "/Admin/AdminPage";
+        }
+        else {
+            var r = confirm("Are you sure?");
+            if (r == true) {
+                return window.location.href = "/Admin/AdminPage";
+            }
+        }
+    }
+</script>

@@ -1,5 +1,7 @@
 ﻿@page
+@using Microsoft.AspNetCore.Identity
 @model WebbShop.Pages.Account.Manage.IndexModel
+@inject SignInManager<IdentityUser> SignInManager
 @{
 }
-<h1>Account page</h1>
+<h1>Wellcome @User.Identity.Name</h1>
