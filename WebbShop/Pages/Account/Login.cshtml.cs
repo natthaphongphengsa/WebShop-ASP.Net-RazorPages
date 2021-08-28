@@ -3,39 +3,44 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using WebbShop.ViewModels;
 
 namespace WebbShop.Pages.Account
 {
-    [BindProperties]
     public class LoginModel : PageModel
     {
-        [Required]
-        [EmailAddress]
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-        public bool RememberMe { get; set; }
+        public SignInManager<IdentityUser> SignInManager { get; }
+        [BindProperty]
+        public Login Model { get; set; }
 
-        public bool LoginStatus { get; set; }
+        public LoginModel(SignInManager<IdentityUser> signInManager)
+        {
+            SignInManager = signInManager;
+        }
 
         public void OnGet()
         {
-            LoginStatus = false;
+           
         }
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             if (ModelState.IsValid)
             {
-                return RedirectToPage("/Account/Manage/Index");
+                var SignInresult  = await SignInManager.PasswordSignInAsync(Model.EmailAddress, Model.Password, Model.Rememberme, false);
+                if (SignInresult.Succeeded)
+                {
+                    if(returnUrl == null || returnUrl == "/")
+                    {
+                        return RedirectToPage("/Index");
+                    }
+                    return RedirectToPage(returnUrl);
+                }
+                ModelState.AddModelError("", "Your username or password is incorrect! Try Again");
             }
-            else
-            {
-                return Page();
-            }
+            return Page();
         }
     }
 }

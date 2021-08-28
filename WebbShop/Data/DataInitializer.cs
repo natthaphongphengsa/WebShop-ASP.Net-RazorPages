@@ -19,8 +19,8 @@ namespace WebbShop.Data
         {
             dbContext.Database.Migrate();
             //SeedAdmin(dbContext);
-            SeedCategory(dbContext);
-            SeedProducts(dbContext);
+            //SeedCategory(dbContext);
+            //SeedProducts(dbContext);
         }
         public static void SeedProducts(ApplicationDbContext dbContext)
         {
