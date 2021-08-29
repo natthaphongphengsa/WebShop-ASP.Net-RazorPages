@@ -24,9 +24,11 @@ namespace WebbShop.Pages
 
         public List<Product> products { get; set; } = new List<Product>();
         public List<Category> categories { get; set; } = new List<Category>();
+        public List<ImageFile> imageFiles { get; set; } = new List<ImageFile>();
         public void OnGet()
         {
             products = _dbContext.product.ToList();
+            imageFiles = _dbContext.imagefiles.ToList();
             categories = _dbContext.category.ToList();
         }
     }

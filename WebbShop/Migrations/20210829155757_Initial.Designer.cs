@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebbShop.Data;
 
 namespace WebbShop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210829155757_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -336,7 +338,7 @@ namespace WebbShop.Migrations
             modelBuilder.Entity("WebbShop.Models.ImageFile", b =>
                 {
                     b.HasOne("WebbShop.Models.Product", "product")
-                        .WithMany("ImageFile")
+                        .WithMany()
                         .HasForeignKey("productId");
 
                     b.Navigation("product");
@@ -354,11 +356,6 @@ namespace WebbShop.Migrations
             modelBuilder.Entity("WebbShop.Models.Category", b =>
                 {
                     b.Navigation("products");
-                });
-
-            modelBuilder.Entity("WebbShop.Models.Product", b =>
-                {
-                    b.Navigation("ImageFile");
                 });
 #pragma warning restore 612, 618
         }

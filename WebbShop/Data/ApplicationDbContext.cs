@@ -15,5 +15,6 @@ namespace WebbShop.Data
         }
         public DbSet<Product> product { get; set; }
         public DbSet<Category> category { get; set; }
+        public DbSet<ImageFile> imagefiles { get; set; }
     }
 }

@@ -174,7 +174,6 @@ namespace WebbShop.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -184,6 +183,28 @@ namespace WebbShop.Migrations
                         name: "FK_product_category_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "category",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "imagefiles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Filename = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Filetype = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DataFiles = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    productId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_imagefiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_imagefiles_product_productId",
+                        column: x => x.productId,
+                        principalTable: "product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -228,6 +249,11 @@ namespace WebbShop.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_imagefiles_productId",
+                table: "imagefiles",
+                column: "productId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_product_CategoryId",
                 table: "product",
                 column: "CategoryId");
@@ -251,13 +277,16 @@ namespace WebbShop.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "product");
+                name: "imagefiles");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "product");
 
             migrationBuilder.DropTable(
                 name: "category");

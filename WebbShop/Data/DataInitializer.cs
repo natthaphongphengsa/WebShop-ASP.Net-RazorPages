@@ -19,7 +19,7 @@ namespace WebbShop.Data
         public static void SeedData(ApplicationDbContext dbContext)
         {
             dbContext.Database.Migrate();
-            SeedAdminAsync(dbContext);
+            _ = SeedAdminAsync(dbContext);
             //SeedCategory(dbContext);
             //SeedProducts(dbContext);
         }
@@ -34,17 +34,24 @@ namespace WebbShop.Data
             {
                 if (!dbContext.product.Any(c => c.Name == item.title))
                 {
-                    dbContext.product.Add(new Product()
+                    var product  = new Product()
                     {
                         Name = item.title,
                         Description = item.description,
                         Price = item.price,
-                        Image = item.image,
                         Category = dbContext.category.First(c => c.Name == item.category)
+                    };
+                    dbContext.product.Add(product);
+                    dbContext.SaveChanges();
+                    dbContext.imagefiles.Add(new ImageFile() 
+                    {
+                       Filename = item.image,
+                       product = product,
                     });
+                    dbContext.SaveChanges();
                 }
             }
-            dbContext.SaveChanges();
+            //dbContext.SaveChanges();
         }
         public static void SeedCategory(ApplicationDbContext dbContext)
         {

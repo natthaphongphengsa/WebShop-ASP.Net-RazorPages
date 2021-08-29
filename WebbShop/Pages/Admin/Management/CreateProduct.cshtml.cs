@@ -20,19 +20,17 @@ namespace WebbShop.Pages.Admin.Management
     public class CreateProductModel : PageModel
     {
         public readonly ApplicationDbContext _dbContext;
-        private readonly IHostingEnvironment ihostingEnvironment;
 
-        public CreateProductModel(ApplicationDbContext dbContext, IHostingEnvironment ihostingEnvironment)
+        public CreateProductModel(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
-            this.ihostingEnvironment = ihostingEnvironment;
         }
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
         public string Description { get; set; }
-        [Required]   
+        [Required]
         public decimal Price { get; set; }
         [Required]
         public int SelectedCategoryId { get; set; }
@@ -54,39 +52,43 @@ namespace WebbShop.Pages.Admin.Management
         public IActionResult OnPost()
         {
             OnGet();
-            var newFileName = "";
-            if (Bild is not null)
-            {
-                var fileName = Path.GetFileName(Bild.FileName);
-                var fileExtension = Path.GetExtension(fileName);
-                newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
-                //var imagefile = new ImageStore()
-                //{
-                //    Name = newFileName,
-                //    Filtype = fileExtension,
-                //};
-                using (var target = new MemoryStream())
-                {
-                    Bild.CopyTo(target);
-                }
-            }
-            else
-            {
-            }
             if (ModelState.IsValid)
             {
-                _dbContext.product.Add(new Product() 
+                var product = new Product()
                 {
                     Name = Name,
                     Description = Description,
-                    Image = newFileName,
                     Price = Price,
                     Category = _dbContext.category.First(c => c.Id == SelectedCategoryId)
-                });
+                };
+                _dbContext.product.Add(product);
                 _dbContext.SaveChanges();
-                return RedirectToPage("/Admin/AdminPage");
+                SaveImageToDb(product.Id);
+                return RedirectToPage("/Admin/Management/Confirm", new { text = "Your new product is now added to database", id = 1 });
             }
             return Page();
+        }
+        public void SaveImageToDb(int n)
+        {
+            ImageFile img = new ImageFile();
+            var prodcut = _dbContext.product.First(c => c.Id == n);
+            if (Bild is not null)
+            {
+                foreach (var file in Request.Form.Files)
+                {
+                    img.Filename = file.FileName;
+                    MemoryStream ms = new MemoryStream();
+                    file.CopyTo(ms);
+                    img.DataFiles = ms.ToArray();
+                    img.product = prodcut;
+
+                    ms.Close();
+                    ms.Dispose();
+
+                    _dbContext.imagefiles.Add(img);
+                }
+            }
+            _dbContext.SaveChanges();
         }
     }
 }

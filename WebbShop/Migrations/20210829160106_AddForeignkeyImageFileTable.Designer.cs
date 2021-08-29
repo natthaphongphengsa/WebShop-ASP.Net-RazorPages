@@ -10,8 +10,8 @@ using WebbShop.Data;
 namespace WebbShop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210827235638_Initial")]
-    partial class Initial
+    [Migration("20210829160106_AddForeignkeyImageFileTable")]
+    partial class AddForeignkeyImageFileTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -232,6 +232,32 @@ namespace WebbShop.Migrations
                     b.ToTable("category");
                 });
 
+            modelBuilder.Entity("WebbShop.Models.ImageFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<byte[]>("DataFiles")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Filename")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Filetype")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("productId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("productId");
+
+                    b.ToTable("imagefiles");
+                });
+
             modelBuilder.Entity("WebbShop.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -243,9 +269,6 @@ namespace WebbShop.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -312,6 +335,15 @@ namespace WebbShop.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("WebbShop.Models.ImageFile", b =>
+                {
+                    b.HasOne("WebbShop.Models.Product", "product")
+                        .WithMany("ImageFile")
+                        .HasForeignKey("productId");
+
+                    b.Navigation("product");
+                });
+
             modelBuilder.Entity("WebbShop.Models.Product", b =>
                 {
                     b.HasOne("WebbShop.Models.Category", "Category")
@@ -324,6 +356,11 @@ namespace WebbShop.Migrations
             modelBuilder.Entity("WebbShop.Models.Category", b =>
                 {
                     b.Navigation("products");
+                });
+
+            modelBuilder.Entity("WebbShop.Models.Product", b =>
+                {
+                    b.Navigation("ImageFile");
                 });
 #pragma warning restore 612, 618
         }

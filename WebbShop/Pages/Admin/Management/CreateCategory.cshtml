@@ -1,0 +1,15 @@
+﻿@page
+@model WebbShop.Pages.Admin.Management.CreateCategoryModel
+@{
+}
+<h1>Create new category</h1>
+<form method="post">
+    <div class="form-group">
+        <label for="exampleInputEmail1" class="form-label font-weight-bold">Category name</label>
+        <span asp-validation-for="Name" class="text-danger"></span>
+        <input asp-for="Name" type="text" class="form-control" placeholder="Category name"/>
+
+        <button type="submit" class="btn btn-success mt-4">Save</button>
+        <button type="button" Onclick="CancelClicked(1)" class="btn btn-primary mt-4">Cancel</button>
+    </div>
+</form>

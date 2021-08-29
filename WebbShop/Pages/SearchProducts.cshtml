@@ -8,7 +8,7 @@
     <h1>Could not found anything!</h1>
     <h2>You have not entered any text in the search box!!!</h2>
 }
-else
+else if (Model.products.Count != 0)
 {
     <div class="container">
         <div class="row justify-content-between">
@@ -28,22 +28,41 @@ else
     </div>
 }
 <div class="row">
-    @foreach (var item in Model.products)
+    @if (Model.products.Count == 0 && Model.SeachInput != null)
     {
-        <div class="column col-md-3 p-3">
-            <a asp-page="/ProductDetail" asp-route-id="@item.Id" class="btn btn" style="max-height:500px; min-height:500px">
-                <div class="text-center p-4" style="height:250px;">
-                    <div class="d-flex justify-content-center">
-                        <img src="@item.Image" style="width:70%;" alt="@item.Image">
+        <h1>Could not found <b>@Model.SeachInput!</b></h1>
+    }
+    else
+    {
+        @foreach (var item in Model.products)
+        {
+            <div class="column col-md-3 p-3">
+                <a asp-page="/ProductDetail" asp-route-id="@item.Id" class="btn btn" style="max-height:500px; min-height:500px">
+                    <div class="text-center p-4" style="height:250px;">
+                        <div class="d-flex justify-content-center">
+                            @{
+                                var img = item.ImageFile.First(i => i.product == item);
+                                if (img.DataFiles == null)
+                                {
+                                    <img src="@img.Filename" style="width:70%" alt="" />
+                                }
+                                else
+                                {
+                                    string imageBase64Data = Convert.ToBase64String(img.DataFiles);
+                                    string ImageUrl = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
+                                    <img src="@ImageUrl" style="width:70%;" alt="">
+                                }
+                            }
+                        </div>
                     </div>
-                </div>
-                <div class="text-left p-2" style="min-height:150px; max-height:200px">
-                    <p class="card-title">@item.Name</p>
-                </div>
-                <div class="text-right p-2">
-                    <p class="card-text font-weight-bold">@item.Price kr</p>
-                </div>
-            </a>
-        </div>
+                    <div class="text-left p-2" style="min-height:150px; max-height:200px">
+                        <p class="card-title">@item.Name</p>
+                    </div>
+                    <div class="text-right p-2">
+                        <p class="card-text font-weight-bold">@item.Price kr</p>
+                    </div>
+                </a>
+            </div>
+        }
     }
 </div>

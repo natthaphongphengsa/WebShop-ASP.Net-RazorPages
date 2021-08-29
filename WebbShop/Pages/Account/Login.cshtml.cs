@@ -16,6 +16,8 @@ namespace WebbShop.Pages.Account
         public UserManager<IdentityUser> UserManager { get; }
         [BindProperty]
         public Login Model { get; set; }
+        [BindProperty]
+        public string LoginMessage { get; set; }
 
         public LoginModel(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
@@ -60,7 +62,8 @@ namespace WebbShop.Pages.Account
                         return RedirectToPage(returnUrl);
                     }
                 }
-                ModelState.AddModelError("", "Your username or password is incorrect! Try Again");
+                ModelState.AddModelError("failed", "Your username or password is incorrect! Try Again");
+
             }
             return Page();
         }

@@ -33,8 +33,19 @@ namespace WebbShop.Pages
             Name = item.Name;
             Description = item.Description;
             Price = item.Price;
-            Image = item.Image;
             Category = _dbContext.product.First(c => c.Id == id).Category;
+            var img = _dbContext.imagefiles.First(c => c.product == item);
+            if (img.DataFiles == null)
+            {
+                Image = img.Filename;
+            }
+            else
+            {
+                string imageBase64Data = Convert.ToBase64String(img.DataFiles);
+                string ImageUrl = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
+                Image = ImageUrl;
+
+            }
         }
     }
 }

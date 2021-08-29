@@ -4,6 +4,16 @@
     ViewData["Title"] = "Admin";
 }
 <h1>Hello @User.Identity.Name</h1>
+<div class="container">
+    <ul class="nav justify-content-lg-start">
+        <li class="nav-item p-2">
+            <a class="btn btn-primary" asp-area="" asp-page="/Admin/Management/CreateProduct">Add new Product</a>
+        </li>
+        <li class="nav-item p-2">
+            <a class="btn btn-primary" asp-area="" asp-page="/Admin/Management/CategoryList">All Categories</a>
+        </li>
+    </ul>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -23,7 +33,19 @@
                 <td>
                     <b>@item.Name</b>
                     <a asp-page="/ProductDetail" asp-route-id="@item.Id" class="btn btn">
-                        <img src="@item.Image" alt="@item.Name" style="width:100%;" />
+                        @{
+                            var img = item.ImageFile.First(i => i.product == item);
+                            if (img.DataFiles == null)
+                            {
+                                <img src="@img.Filename" style="width:70%" alt="" />
+                            }
+                            else
+                            {
+                                string imageBase64Data = Convert.ToBase64String(img.DataFiles);
+                                string ImageUrl = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
+                                <img src="@ImageUrl" style="width:70%;" alt="">
+                            }
+                        }
                     </a>
                 </td>
                 <td>@item.Description</td>
@@ -33,18 +55,10 @@
                 </td>
                 <td>
                     <form method="post">
-                        <button type="submit" name="id" value="@item.Id" Onclick="DeleteClicked()" class="btn btn-danger">Delete</button>
+                        <button type="submit" name="id" value="@item.Id" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<script>
-    function DeleteClicked() {
-        var r = confirm("Are you sure?");
-        if (r == true) {
-            return window.location.href = "/Admin/AdminPage";
-        }
-    }
-</script>

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebbShop.Data;
 using WebbShop.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WebbShop.Pages.Admin.Management
 {
@@ -46,8 +47,19 @@ namespace WebbShop.Pages.Admin.Management
             Name = item.Name;
             Description = item.Description;
             Price = item.Price;
-            Image = item.Image;
             SelectedCategoryId = item.Category.Id;
+            var img = _dbContext.imagefiles.First(c => c.product == item);
+            if (img.DataFiles == null) 
+            {
+                Image = img.Filename;
+            }
+            else
+            {
+                string imageBase64Data = Convert.ToBase64String(img.DataFiles);
+                string ImageUrl = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
+                Image = ImageUrl;
+
+            }
 
             Category = _dbContext.category.Select(c => new SelectListItem()
             {
@@ -56,46 +68,47 @@ namespace WebbShop.Pages.Admin.Management
             }).ToList();
         }
         public IActionResult OnPost(int id)
-        {
-            OnGet(id);
-            //string filename = Path.GetFileNameWithoutExtension(GetImageFileName);
-            //string extension = Path.GetExtension(GetImageFileName);
-            //ImagePath = "~/Image/" + filename;
-            var newFileName = "";
-            if (Bild is not null)
-            {
-                var fileName = Path.GetFileName(Bild.FileName);
-                var fileExtension = Path.GetExtension(fileName);
-                newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);
-                //var imagefile = new ImageStore()
-                //{
-                //    Name = newFileName,
-                //    Filtype = fileExtension,
-                //};
-                using (var target = new MemoryStream())
-                {
-                    Bild.CopyTo(target);
-                }
-            }
-            else
-            {
-            }
+        {            
             if (ModelState.IsValid)
             {
                 var updateproduct = _dbContext.product.First(p => p.Id == id);
                 updateproduct.Name = Name;
                 updateproduct.Description = Description;
-                updateproduct.Price = Price;
-                if (Image != Bild.FileName)
-                {
-                    updateproduct.Image = newFileName;                    
-                }
+                updateproduct.Price = Price;              
                 updateproduct.Category = _dbContext.category.First(c => c.Id == SelectedCategoryId);
                 _dbContext.product.Update(updateproduct);
                 _dbContext.SaveChanges();
-                return RedirectToPage("/Admin/AdminPage");
+
+                if (Bild != null)
+                {
+                    var imageid = _dbContext.imagefiles.First(i => i.product.Id == id);
+                    UpdateImageInDb(imageid.Id);
+                }
+                return RedirectToPage("/Admin/Management/Confirm", new { text = "Your product is now updateded", id = 1 });
             }
+            OnGet(id);
             return Page();
+        }
+        public void UpdateImageInDb(int id)
+        {
+            if (Bild is not null)
+            {
+                foreach (var file in Request.Form.Files)
+                {                    
+                    MemoryStream ms = new MemoryStream();
+                    file.CopyTo(ms);
+
+                    ms.Close();
+                    ms.Dispose();
+
+                    var upimg = _dbContext.imagefiles.First(i => i.Id == id);
+                    upimg.Filename = file.FileName;
+                    upimg.DataFiles = ms.ToArray();
+                    _dbContext.imagefiles.Update(upimg);                    
+                    _dbContext.SaveChanges();
+                }
+            }
+            
         }
     }
 }

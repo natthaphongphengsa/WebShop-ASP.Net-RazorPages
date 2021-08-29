@@ -16,6 +16,7 @@ namespace WebbShop.Pages
 
         public List<Product> products { get; set; } = new List<Product>();
         public List<Category> categories { get; set; } = new List<Category>();
+        public List<ImageFile> imageFiles { get; set; } = new List<ImageFile>();
         public List<SelectList> selected { get; set; } = new List<SelectList>();
         public List<SelectListItem> FilterList { get; set; } = new List<SelectListItem>();
 
@@ -25,12 +26,13 @@ namespace WebbShop.Pages
         public SearchProductsModel(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
+            categories = _dbContext.category.ToList();
+            imageFiles = _dbContext.imagefiles.ToList();
         }
         public void OnGet(string searchinput)
         {
             SeachInput = searchinput;
             OnPost(selectedFilter, searchinput);
-            categories = _dbContext.category.ToList();
         }
 
         public IActionResult OnPost(int id, string search)

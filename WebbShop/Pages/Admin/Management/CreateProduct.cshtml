@@ -3,11 +3,11 @@
 @{
     ViewData["Title"] = "Create new";
 }
-<form method="post" asp-route-id="@Model.Id" enctype="multipart/form-data">
+<form method="post" asp-route-id="@Model.Id" enctype="multipart/form-data" class="forms">
     <div class="form-group">
-        <label for="exampleInputEmail1" class="form-label mt-4 font-weight-bold">Title</label>
+        <label for="exampleInputEmail1" class="form-label font-weight-bold">Title</label>
         <span asp-validation-for="Name" class="text-danger"></span>
-        <input asp-for="Name" type="text" class="form-control mt-4">
+        <input asp-for="Name" type="text" class="name form-control">
 
         <label for="exampleInputEmail1" class="form-label mt-4 font-weight-bold">Description</label>
         <span asp-validation-for="Description" class="text-danger"></span>
@@ -20,26 +20,12 @@
         <label for="exampleInputEmail1" class="form-label mt-4 font-weight-bold">Category</label>
         <span asp-validation-for="Category" class="text-danger"></span>
         <select asp-for="SelectedCategoryId" class="form-select form-control mt-4" aria-label="Default select example" asp-items="@Model.Category">
-            @*<option selected>@Model.SelectedCategory</option>*@
         </select>
 
         <span asp-validation-for="Bild" class="text-danger"></span>
         <input asp-for="Bild" class="form-control" style="padding:3px;" type="file" id="formFile" />
 
-        <button type="submit" onclick="SaveClicked(1)" class="btn btn-primary mt-4">Save</button>
-        <button type="button" Onclick="SaveClicked(2)" class="btn btn-primary mt-4">Cancel</button>
+        <button type="submit" class="btn btn-success mt-4">Save</button>
+        <button type="button" Onclick="CancelClicked()" class="btn btn-primary mt-4">Cancel</button>
     </div>
 </form>
-<script>
-    function SaveClicked(id) {
-        if (id == 1) {
-            alert("Your product is now added to database")            
-        }
-        else {
-            var r = confirm("All of your work will not save. " + "Do you still want to cancel?");
-            if (r == true) {
-                return window.location.href = "/Index";
-            }
-        }
-    }
-</script>

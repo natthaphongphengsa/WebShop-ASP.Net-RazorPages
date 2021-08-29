@@ -18,12 +18,14 @@ namespace WebbShop.Pages
         }
         public List<Product> products { get; set; } = new List<Product>();
         public List<Category> categories { get; set; } = new List<Category>();
+        public List<ImageFile> imageFiles { get; set; } = new List<ImageFile>();
         public string CategoryName { get; set; }
 
         public void OnGet(int id)
         {
 
             categories = _dbContext.category.ToList();
+            imageFiles = _dbContext.imagefiles.ToList();
             var category = categories.First(c => c.Id == id);
             CategoryName = category.Name;
             products = _dbContext.product.Where(c => c.Category.Id == id).ToList();

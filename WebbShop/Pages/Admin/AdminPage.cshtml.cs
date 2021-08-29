@@ -20,16 +20,20 @@ namespace WebbShop.Pages.Admin
         }
 
         public List<Product> products { get; set; } = new List<Product>();
+        public List<ImageFile> imageFiles { get; set; } = new List<ImageFile>();
         public void OnGet()
         {
             products = _dbContext.product.ToList();
+            imageFiles = _dbContext.imagefiles.ToList();            
         }
-        public void OnPost(int id)
-        {            
+        public IActionResult OnPost(int id)
+        {
             var product = _dbContext.product.First(c => c.Id == id);
+            var image = _dbContext.imagefiles.First(i => i.product == product);
+            _dbContext.imagefiles.Remove(image);
             _dbContext.product.Remove(product);
             _dbContext.SaveChanges();
-            OnGet();
+            return RedirectToPage("/Admin/Management/Confirm", new { text = "Your product is now deleted from database", id = 1 });
         }
     }
 }
