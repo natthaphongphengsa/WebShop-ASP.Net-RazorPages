@@ -12,6 +12,10 @@ namespace WebbShop.ViewModels
         [EmailAddress]
         [DataType(DataType.EmailAddress)]
         public string EmailAddress { get; set; }
+        [Required]
+        [MaxLength(10)]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Onlynumber is allowed")]
+        public int PhoneNumber { get; set; }
         [MaxLength(12)]
         [Required]
         [StringLength(10, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 10)]

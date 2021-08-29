@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -10,10 +11,33 @@ using WebbShop.ViewModels;
 
 namespace WebbShop.Pages.Account
 {
+    [BindProperties]
     public class RegisterModel : PageModel
     {
-        [BindProperty]
-        public Register Registermodel { get; set; }
+        //[BindProperty]
+        //public Register Registermodel { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [DataType(DataType.EmailAddress)]
+        public string EmailAddress { get; set; }
+        [Required]
+        [MaxLength(10)]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Only number is allowed")]
+        public string PhoneNumber { get; set; }
+        [MaxLength(12)]
+        [Required]
+        [StringLength(10, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 10)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+        [Compare("Password", ErrorMessage = "Confirm password doesn't match, Try again !")]
+        [MaxLength(12)]
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string ConfirmPassword { get; set; }
 
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
@@ -21,6 +45,7 @@ namespace WebbShop.Pages.Account
 
         public RegisterModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ApplicationDbContext dbContext)
         {
+            _dbContext = dbContext;
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
@@ -33,13 +58,14 @@ namespace WebbShop.Pages.Account
             {
                 var Customer = new IdentityUser()
                 {
-                    UserName = Registermodel.EmailAddress,
-                    Email = Registermodel.EmailAddress,                    
+                    UserName = EmailAddress,
+                    Email = EmailAddress,
+                    PhoneNumber = PhoneNumber.ToString()
                 };
-                if (!_dbContext.Users.Any(u => u.UserName == Customer.UserName))
+                if (!_dbContext.Users.Any(u => u.UserName == Customer.Email))
                 {
                     var password = new PasswordHasher<IdentityUser>();
-                    var hashed = password.HashPassword(Customer, Registermodel.Password);
+                    var hashed = password.HashPassword(Customer, Password);
                     Customer.PasswordHash = hashed;
 
                     _dbContext.Users.Add(Customer);

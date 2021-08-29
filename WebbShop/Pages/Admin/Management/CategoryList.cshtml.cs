@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebbShop.Data;
@@ -9,6 +10,7 @@ using WebbShop.Models;
 
 namespace WebbShop.Pages.Admin.Management
 {
+    [Authorize(Roles = "Admin")]
     public class CategoryListModel : PageModel
     {
         public readonly ApplicationDbContext _dbContext;

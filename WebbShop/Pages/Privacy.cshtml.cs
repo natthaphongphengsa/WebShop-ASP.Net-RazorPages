@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace WebbShop.Pages
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class PrivacyModel : PageModel
     {
         private readonly ILogger<PrivacyModel> _logger;
