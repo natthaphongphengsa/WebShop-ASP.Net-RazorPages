@@ -19,7 +19,8 @@ namespace WebbShop.Pages.Account
         public string EmailAddress { get; set; }
         [Required]
         [MaxLength(10)]
-        [DataType(DataType.PhoneNumber, ErrorMessage = "Onlynumber is allowed")]
+        //[DataType(DataType.PhoneNumber, ErrorMessage = "Only number is allowed")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Only number is allowed")]
         public string PhoneNumber { get; set; }
         [MaxLength(12)]
         [Required]
@@ -73,6 +74,7 @@ namespace WebbShop.Pages.Account
                     };
                     _dbContext.UserRoles.Add(UserRole);
                 }
+
                 var result = await userManager.CreateAsync(Customer, Customer.PasswordHash);
                 if (result.Succeeded)
                 {
@@ -83,7 +85,7 @@ namespace WebbShop.Pages.Account
                 {
                     foreach (var error in result.Errors)
                     {
-                        ModelState.AddModelError("", error.Description);
+                        ModelState.AddModelError("Error", error.Description);
                     }
                 }
             }
