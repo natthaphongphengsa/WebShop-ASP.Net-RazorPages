@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using WebbShop.Data;
 using WebbShop.Models;
-using WebbShop.ViewModels;
 
 namespace WebbShop.Data
 {

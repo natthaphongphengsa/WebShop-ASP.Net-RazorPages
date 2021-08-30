@@ -6,18 +6,25 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using WebbShop.ViewModels;
 
 namespace WebbShop.Pages.Account
 {
+    [BindProperties]
     public class LoginModel : PageModel
     {
-        public SignInManager<IdentityUser> SignInManager { get; }
-        public UserManager<IdentityUser> UserManager { get; }
-        [BindProperty]
-        public Login Model { get; set; }
-        [BindProperty]
-        public string LoginMessage { get; set; }
+        [Required]
+        [EmailAddress]
+        [DataType(DataType.EmailAddress)]
+        public string EmailAddress { get; set; }
+        [MaxLength(12)]
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+        public bool Rememberme { get; set; }
+        public SignInManager<IdentityUser> SignInManager;
+        public UserManager<IdentityUser> UserManager;
 
         public LoginModel(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
@@ -32,11 +39,11 @@ namespace WebbShop.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                var SignInresult = await SignInManager.PasswordSignInAsync(Model.EmailAddress, Model.Password, Model.Rememberme, false);
+                var SignInresult = await SignInManager.PasswordSignInAsync(EmailAddress, Password, Rememberme, false);
 
                 if (SignInresult.Succeeded)
                 {
-                    var user = await UserManager.FindByEmailAsync(Model.EmailAddress);
+                    var user = await UserManager.FindByEmailAsync(EmailAddress);
                     var userrole = await UserManager.GetRolesAsync(user);
                     string result = userrole[0].ToString();
                     //if (returnUrl == null || returnUrl == "/")

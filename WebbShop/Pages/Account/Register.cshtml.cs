@@ -7,24 +7,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebbShop.Data;
-using WebbShop.ViewModels;
 
 namespace WebbShop.Pages.Account
 {
     [BindProperties]
     public class RegisterModel : PageModel
     {
-        //[BindProperty]
-        //public Register Registermodel { get; set; }
-
         [Required]
         [EmailAddress]
         [DataType(DataType.EmailAddress)]
         public string EmailAddress { get; set; }
         [Required]
         [MaxLength(10)]
-        [DataType(DataType.PhoneNumber)]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "Only number is allowed")]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Onlynumber is allowed")]
         public string PhoneNumber { get; set; }
         [MaxLength(12)]
         [Required]
@@ -32,7 +27,7 @@ namespace WebbShop.Pages.Account
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
-        [Compare("Password", ErrorMessage = "Confirm password doesn't match, Try again !")]
+        [Compare("Password", ErrorMessage = "Confirm password doesn't match, Type again !")]
         [MaxLength(12)]
         [Required]
         [DataType(DataType.Password)]
@@ -60,13 +55,15 @@ namespace WebbShop.Pages.Account
                 {
                     UserName = EmailAddress,
                     Email = EmailAddress,
-                    PhoneNumber = PhoneNumber.ToString()
+                    PhoneNumber = PhoneNumber,
+                    PasswordHash = Password
+                    
                 };
                 if (!_dbContext.Users.Any(u => u.UserName == Customer.Email))
                 {
-                    var password = new PasswordHasher<IdentityUser>();
-                    var hashed = password.HashPassword(Customer, Password);
-                    Customer.PasswordHash = hashed;
+                    //var password = new PasswordHasher<IdentityUser>();
+                    //var hashed = password.HashPassword(Customer, Registermodel.Password);
+                    //Customer.PasswordHash = hashed;
 
                     _dbContext.Users.Add(Customer);
                     var UserRole = new IdentityUserRole<string>()
