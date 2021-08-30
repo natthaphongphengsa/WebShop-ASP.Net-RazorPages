@@ -29,7 +29,8 @@ namespace WebbShop
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Server=localhost; Database = WebbShop; Trusted_Connection = True;"));
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-            services.ConfigureApplicationCookie(config => {config.LoginPath = "/Account/Login"; });
+            services.ConfigureApplicationCookie(config => { config.LoginPath = "/Account/Login"; });
+            services.ConfigureApplicationCookie(c => { c.AccessDeniedPath = "/AccessDenied"; });
             services.AddRazorPages();
         }
 
