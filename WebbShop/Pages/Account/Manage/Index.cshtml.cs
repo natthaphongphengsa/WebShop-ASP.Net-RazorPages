@@ -9,7 +9,7 @@ using WebbShop.Data;
 
 namespace WebbShop.Pages.Account.Manage
 {
-    [Authorize]
+    [Authorize(Roles = "Customer")]
     public class IndexModel : PageModel
     {        
         public readonly ApplicationDbContext _dbContext;
