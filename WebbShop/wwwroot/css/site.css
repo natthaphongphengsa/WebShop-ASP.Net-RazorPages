@@ -11,12 +11,6 @@ a.navbar-brand {
 a {
   color: #0366d6;
 }
-/*.badge {
-    background-color: red;
-    color: white;
-    float: right;
-    font-size: 18px;
-}*/
 
 .btn-primary {
     color: #fff;
@@ -74,4 +68,61 @@ body {
   width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
+}
+html {
+    scroll-behavior: smooth;
+    transition: 0.3s;
+    position: relative;
+    min-height: 100%;
+}
+
+main {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    animation: transitionIn 0.75s;
+}
+
+@keyframes transitionIn {
+    from {
+        opacity: 0;
+        transform: rotateY(-10deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: rotateY(0);
+    }
+}
+.divider-text {
+    position: relative;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+    .divider-text span {
+        padding: 7px;
+        font-size: 12px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .divider-text:after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        border-bottom: 1px solid #ddd;
+        top: 55%;
+        left: 0;
+        z-index: 1;
+    }
+
+.btn-facebook {
+    background-color: #405D9D;
+    color: #fff;
+}
+
+.btn-twitter {
+    background-color: #42AEEC;
+    color: #fff;
 }

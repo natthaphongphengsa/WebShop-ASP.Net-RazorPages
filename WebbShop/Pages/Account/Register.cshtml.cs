@@ -19,7 +19,7 @@ namespace WebbShop.Pages.Account
         public string EmailAddress { get; set; }
         [Required]
         [MaxLength(10)]
-        //[DataType(DataType.PhoneNumber, ErrorMessage = "Only number is allowed")]
+        [StringLength(10)]
         [RegularExpression("^[0-9]*$", ErrorMessage = "Only number is allowed")]
         public string PhoneNumber { get; set; }
         [MaxLength(12)]
@@ -56,7 +56,7 @@ namespace WebbShop.Pages.Account
                 {
                     UserName = EmailAddress,
                     Email = EmailAddress,
-                    PhoneNumber = PhoneNumber,
+                    PhoneNumber = PhoneNumber.ToString(),
                     PasswordHash = Password
                     
                 };
