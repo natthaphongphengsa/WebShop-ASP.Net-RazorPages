@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,9 +36,6 @@ namespace WebbShop
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
             });
-            services.AddControllers().AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
             services.AddMvc();
             services.AddRazorPages();
         }
@@ -56,6 +54,7 @@ namespace WebbShop
                 app.UseHsts();
             }
 
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -63,7 +62,6 @@ namespace WebbShop
 
             app.UseSession();
 
-            //app.UseMvc();
 
             app.UseAuthentication();
 

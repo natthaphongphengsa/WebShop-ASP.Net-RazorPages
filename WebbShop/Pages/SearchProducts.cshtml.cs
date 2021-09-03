@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebbShop.Data;
 using WebbShop.Models;
+using WebbShop.Session;
 
 namespace WebbShop.Pages
 {
@@ -37,6 +39,13 @@ namespace WebbShop.Pages
 
         public IActionResult OnPost(int id, string search)
         {
+            var count = HttpContext.Session.Get<List<Product>>("CartList");
+            if (count != null)
+            {
+
+                ViewData["Amount"] = count.Count();
+
+            }
             SeachInput = search;
             selectedFilter = id;
             FilterList.Add(new SelectListItem() { Text = "Low price first", Value = "0", });

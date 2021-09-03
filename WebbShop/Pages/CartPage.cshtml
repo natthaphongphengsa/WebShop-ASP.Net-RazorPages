@@ -7,38 +7,34 @@
 @if (Model.CartListProducts.Count == 0)
 {
     <h1 class="text-center">Your cart is Empty!</h1>
+    <div class="text-center">
+
+    </div>
     <a asp-page="/Index" class="btn-link text-center">click here to see products</a>
 }
 else
 {
     <table class="table">
-        @*<thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>*@
         <tbody>
-
             @foreach (var item in Model.CartListProducts)
             {
                 <tr>
                     <th>
-                        @{
-                            var img = item.ImageFile.First(i => i.product == item);
-                            if (img.DataFiles == null)
-                            {
-                                <img src="@img.Filename" style="width:70%" alt="" />
+                        <a asp-page="/ProductDetail" asp-route-id="@item.Id" class="btn btn">
+                            @{
+                                var img = item.ImageFile.First(i => i.product == item);
+                                if (img.DataFiles == null)
+                                {
+                                    <img src="@img.Filename" style="width:50%" alt="" />
+                                }
+                                else
+                                {
+                                    string imageBase64Data = Convert.ToBase64String(img.DataFiles);
+                                    string ImageUrl = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
+                                    <img src="@ImageUrl" style="width:70%;" alt="">
+                                }
                             }
-                            else
-                            {
-                                string imageBase64Data = Convert.ToBase64String(img.DataFiles);
-                                string ImageUrl = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
-                                <img src="@ImageUrl" style="width:70%;" alt="">
-                            }
-                        }
+                        </a>
                     </th>
                     <td>@item.Description</td>
                     <td>@item.Category.Name</td>
@@ -47,5 +43,11 @@ else
             }
         </tbody>
     </table>
+    <div class="container">
+        <div class="col text-right">
+            <b class="h1">Totalt: @Model.Sum SEK</b>
+        </div>
+        <a asp-page="/CheckOut"></a>
+    </div>
 
 }

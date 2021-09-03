@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebbShop.Data;
 using WebbShop.Models;
+using WebbShop.Session;
 
 namespace WebbShop.Pages
 {
@@ -27,6 +29,13 @@ namespace WebbShop.Pages
         public List<ImageFile> imageFiles { get; set; } = new List<ImageFile>();
         public void OnGet()
         {
+            var count = HttpContext.Session.Get<List<Product>>("CartList");
+            if (count != null)
+            {
+
+                ViewData["Amount"] = count.Count();
+
+            }
             products = _dbContext.product.ToList();
             imageFiles = _dbContext.imagefiles.ToList();
             categories = _dbContext.category.ToList();

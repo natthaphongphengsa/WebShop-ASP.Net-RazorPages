@@ -1,4 +1,7 @@
 ﻿@page
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 @model WebbShop.Pages.ProductDetailModel
 @{
     ViewData["Title"] = "Produkt";
@@ -14,11 +17,24 @@
             <p>
                 <a asp-page="/Category" asp-route-id="@Model.Category.Id">@Model.Category.Name</a>
             </p>
-            <div class="card-img p-4">
-                <img src="@Model.Image" style="max-width:35%; min-width:20%;" />
-            </div>
-            <div class="col card-text text-right">
-                <b style="font-size:28px;">@Model.Price kr</b>
+            <div class="card-img p-4 d-flex">
+                <div class="col">
+                    <img src="@Model.Image" style="max-width:45%; min-width:20%;" />
+                </div>
+                <div class="col">
+                    <b style="font-size:28px;">@Model.Price kr</b>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        if (!User.IsInRole("Admin"))
+                        {
+                            <a asp-page="/CartPage" asp-page-handler="AddToCart" asp-route-id="@Model.Id" class="btn btn w-50 bg-primary d-block" style="color:white;">Add to cart</a>
+                        }
+                    }
+                    else
+                    {
+                        <a asp-page="/CartPage" asp-page-handler="AddToCart" asp-route-id="@Model.Id" class="btn btn w-50 bg-primary d-block" style="color:white;">Add to cart</a>
+                    }
+                </div>
             </div>
         </div>
     </div>

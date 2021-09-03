@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebbShop.Data;
 using WebbShop.Models;
+using WebbShop.Session;
 
 namespace WebbShop.Pages
 {
@@ -28,8 +30,16 @@ namespace WebbShop.Pages
 
         public void OnGet(int id)
         {
+            var count = HttpContext.Session.Get<List<Product>>("CartList");
+            if (count != null)
+            {
+
+                ViewData["Amount"] = count.Count();
+
+            }
             categories = _dbContext.category.ToList();
             var item = _dbContext.product.FirstOrDefault(c => c.Id == id);
+            Id = item.Id;
             Name = item.Name;
             Description = item.Description;
             Price = item.Price;
