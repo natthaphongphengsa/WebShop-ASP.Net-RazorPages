@@ -2,6 +2,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model WebbShop.Pages.CartPageModel
 @{
+    
 }
 
 @if (Model.CartListProducts.Count == 0)
@@ -10,7 +11,7 @@
         <div class="mx-auto h-100 p-5 p-md-5">
             <h1 class="text-center">Your cart is Empty!</h1>
             <div class="text-center">
-                <a asp-page="/Index" class="btn-link text-center">click here to see products</a>
+                <a asp-page="/Index" class="btn-link text-center">Shopping now!</a>
             </div>
         </div>
     </div>
@@ -24,6 +25,7 @@ else
                 <tr>
                     <th>
                         <a asp-page="/ProductDetail" asp-route-id="@item.Id" class="btn btn">
+                            <p>@item.Name</p>
                             @{
                                 var img = item.ImageFile.First(i => i.product == item);
                                 if (img.DataFiles == null)
@@ -41,16 +43,21 @@ else
                     </th>
                     <td>@item.Description</td>
                     <td>@item.Category.Name</td>
-                    <td>@item.Price</td>
+                    <td>@item.Price kr</td>
+                    <td>
+                        <a asp-page="/CartPage" class="btn btn-danger" asp-page-handler="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
     <div class="container">
         <div class="col text-right">
-            <b class="h1">Totalt: @Model.Sum SEK</b>
+            <b class="h1">Totalt: @Model.Sum Kr</b>
         </div>
-        <a asp-page="/CheckOut"></a>
+        <div class="col text-right p-2">
+            <a asp-page="/CheckOut" class="btn btn w-25 bg-primary" style="color:white;">Check out</a>
+        </div>
     </div>
 
 }

@@ -6,12 +6,12 @@ function CancelClicked(id) {
     if (id == 1) {
         var r = confirm("All of your work will not save. Do you still want to cancel?");
         if (r == true) {
-            return window.location.href = "/Admin/Management/CategoryList";
+            return window.location.href = "/Identity/Admin/Management/CategoryList";
         }
     } else {
         var r = confirm("All of your work will not save. Do you still want to cancel?");
         if (r == true) {
-            return window.location.href = "/Admin/AdminPage";
+            return window.location.href = "/Identity/Admin/AdminPage";
         }
     }
 }

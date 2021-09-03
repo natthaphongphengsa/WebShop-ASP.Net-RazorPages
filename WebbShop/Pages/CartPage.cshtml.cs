@@ -55,7 +55,7 @@ namespace WebbShop.Pages
             return Page();
 
         }
-        public IActionResult OnGetAddToCart(int id)
+        public IActionResult OnGetAddToCart(int id, string returnUrl)
         {
             List<CarListProduct> CartList = HttpContext.Session.Get<List<CarListProduct>>("CartList") != null ? (List<CarListProduct>)HttpContext.Session.Get<List<CarListProduct>>("CartList") : new List<CarListProduct>();
 
@@ -74,7 +74,17 @@ namespace WebbShop.Pages
                 //});
             }
             HttpContext.Session.Set("CartList", CartList);
-            return RedirectToPage("Index");
+            returnUrl = HttpContext.Request.Path.ToString();
+            return Redirect(returnUrl);
+            //return RedirectToPage("Index");
+        }
+        public IActionResult OnGetDelete(int id)
+        {
+            List<CarListProduct> CartList = HttpContext.Session.Get<List<CarListProduct>>("CartList") != null ? (List<CarListProduct>)HttpContext.Session.Get<List<CarListProduct>>("CartList") : new List<CarListProduct>();
+
+            CartList.Remove(CartList.First(c => c.Id == id));
+            HttpContext.Session.Set("CartList", CartList);
+            return OnGet();
         }
     }
 }
