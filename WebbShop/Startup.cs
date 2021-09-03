@@ -31,6 +31,14 @@ namespace WebbShop
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.ConfigureApplicationCookie(config => { config.LoginPath = "/Account/Login"; });
             services.ConfigureApplicationCookie(c => { c.AccessDeniedPath = "/AccessDenied"; });
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+            });
+            services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
+            services.AddMvc();
             services.AddRazorPages();
         }
 
@@ -52,6 +60,10 @@ namespace WebbShop
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
+
+            //app.UseMvc();
 
             app.UseAuthentication();
 

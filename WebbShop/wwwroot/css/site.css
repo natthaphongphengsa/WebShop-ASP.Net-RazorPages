@@ -11,11 +11,17 @@ a.navbar-brand {
 a {
   color: #0366d6;
 }
+/*.badge {
+    background-color: red;
+    color: white;
+    float: right;
+    font-size: 18px;
+}*/
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {

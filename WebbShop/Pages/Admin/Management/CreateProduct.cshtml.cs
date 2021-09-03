@@ -38,7 +38,7 @@ namespace WebbShop.Pages.Admin.Management
         public IFormFile Bild { get; set; }
 
         public List<SelectListItem> Category { get; set; }
-        private List<Category> categories { get; set; } = new List<Category>();
+        //private List<Category> categories { get; set; } = new List<Category>();
 
         public string FileName { get; set; }
         public void OnGet()
@@ -51,7 +51,6 @@ namespace WebbShop.Pages.Admin.Management
         }
         public IActionResult OnPost()
         {
-            OnGet();
             if (ModelState.IsValid)
             {
                 var product = new Product()
@@ -66,6 +65,7 @@ namespace WebbShop.Pages.Admin.Management
                 SaveImageToDb(product.Id);
                 return RedirectToPage("/Admin/Management/Confirm", new { text = "Your new product is now added to database", id = 1 });
             }
+            OnGet();
             return Page();
         }
         public void SaveImageToDb(int n)

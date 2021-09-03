@@ -44,6 +44,9 @@
                 <div class="text-right p-2">
                     <p class="card-text font-weight-bold">@item.Price kr</p>
                 </div>
+                <siv class="text-center">
+                    <a asp-page="/CartPage" asp-route-id="@item.Id" class="btn btn w-100 bg-primary" style="color:white;">Add to cart</a>
+                </siv>
             </a>
         </div>
     }
