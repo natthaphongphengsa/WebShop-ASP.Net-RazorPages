@@ -98,7 +98,7 @@ namespace WebbShop.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Your username or password is incorrect. Try Again!");
                     return Page();
                 }
             }

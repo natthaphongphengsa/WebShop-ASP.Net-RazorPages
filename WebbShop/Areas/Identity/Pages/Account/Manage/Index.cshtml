@@ -4,6 +4,10 @@
     ViewData["Title"] = "Profile";
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
+@inject SignInManager<IdentityUser> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -22,17 +26,18 @@
                             <div class="mb-3 bg-dark">
                                 <div class="row">
                                     <div class="col-12">
-                                        <a class="position-absolute ml-3 mt-3 text-white" href="setting.html" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit cover images"><i class="fas fa-cog"></i></a>
+                                        @*<a class="position-absolute ml-3 mt-3 text-white" data-toggle="tooltip" href="" data-placement="bottom" title="" data-original-title="Edit cover images"><i class="fas fa-cog"></i></a>*@
                                         <div class="row">
                                             <div class="col-md-6 ml-auto mr-auto">
-                                                <div class="profiles p-3 my-4 rounded text-center shadow-sm">
+                                                <div class="profiles p-3 my-4 rounded text-center">
                                                     <div class="avatars">
-                                                        <a href="setting.html">
-                                                            <img src="https://demo.bootstrap.news/bootnews/assets/img/avatar/avatar1.png" alt="Circle Image" class="avatar-lg rounded-circle img-fluid" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit avatar images">
+                                                        <a href="#">
+                                                            <img src="https://i1.wp.com/images.binaryfortress.com/General/UnknownUser1024.png?ssl=1" width="100" alt="Circle Image" class="avatar-lg rounded-circle img-fluid" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit avatar images">
                                                         </a>
                                                     </div>
                                                     <div class="names">
                                                         <h3 class="title text-light">@Model.Username</h3>
+                                                        <h6 class="title text-light">Phone: @Model.Input.PhoneNumber</h6>
                                                         <a href="#" class="btn btn-link btn-facebook"><i class="fab fa-facebook"></i></a>
                                                         <a href="#" class="btn btn-link btn-twitter"><i class="fab fa-twitter"></i></a>
                                                         <a href="#" class="btn btn-link btn-gplus"><i class="fab fa-google-plus"></i></a>
@@ -52,134 +57,7 @@
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade active show" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                     <div class="row">
-                                        <div class="col-lg-4 col-sm-6">
-                                            <a class="member-item" href="https://bootstrap.news/bootstrap-4-template-news-portal-magazine/">
-                                                <div class="card mb-2 mb-md-5 py-3">
-                                                    <div class="content">
-                                                        <div class="row">
-                                                            <div class="col-6 d-flex justify-content-center align-items-center">
-                                                                <div class="icon-big text-warning text-center">
-                                                                    <i class="fas fa-copy"></i>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6 d-flex justify-content-center align-items-center">
-                                                                <div class="numbers">
-                                                                    <p>Article</p>
-                                                                    112
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-6">
-                                            <a class="member-item" href="https://bootstrap.news/bootstrap-4-template-news-portal-magazine/">
-                                                <div class="card mb-2 mb-md-5 py-3">
-                                                    <div class="content">
-                                                        <div class="row">
-                                                            <div class="col-6 d-flex justify-content-center align-items-center">
-                                                                <div class="icon-big text-info text-center" title="1 new comment">
-                                                                    <div class="notif">1</div>
-                                                                    <i class="fas fa-comment"></i>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6 d-flex justify-content-center align-items-center">
-                                                                <div class="numbers">
-                                                                    <p>Comments</p>
-                                                                    454
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-6">
-                                            <a class="member-item" href="https://bootstrap.news/bootstrap-4-template-news-portal-magazine/">
-                                                <div class="card mb-2 mb-md-5 py-3">
-                                                    <div class="content">
-                                                        <div class="row">
-                                                            <div class="col-6 d-flex justify-content-center align-items-center">
-                                                                <div class="icon-big text-danger text-center">
-                                                                    <i class="fas fa-heart"></i>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6 d-flex justify-content-center align-items-center">
-                                                                <div class="numbers">
-                                                                    <p>Favorite</p>
-                                                                    56
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-6">
-                                            <a class="member-item" href="https://bootstrap.news/bootstrap-4-template-news-portal-magazine/">
-                                                <div class="card mb-2 mb-md-5 py-3">
-                                                    <div class="content">
-                                                        <div class="row">
-                                                            <div class="col-6 d-flex justify-content-center align-items-center">
-                                                                <div class="icon-big text-twitter text-center" title="1 new messages">
-                                                                    <div class="notif">1</div>
-                                                                    <i class="fas fa-envelope"></i>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6 d-flex justify-content-center align-items-center">
-                                                                <div class="numbers">
-                                                                    <p>Messages</p>
-                                                                    23
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-6">
-                                            <a class="member-item" href="https://bootstrap.news/bootstrap-4-template-news-portal-magazine/">
-                                                <div class="card mb-2 mb-md-5 py-3">
-                                                    <div class="content">
-                                                        <div class="row">
-                                                            <div class="col-6 d-flex justify-content-center align-items-center">
-                                                                <div class="icon-big text-facebook text-center">
-                                                                    <i class="fas fa-star"></i>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6 d-flex justify-content-center align-items-center">
-                                                                <div class="numbers">
-                                                                    <p>Following</p>
-                                                                    112
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-6">
-                                            <a class="member-item" href="https://bootstrap.news/bootstrap-4-template-news-portal-magazine/">
-                                                <div class="card mb-2 mb-md-5 py-3">
-                                                    <div class="content">
-                                                        <div class="row">
-                                                            <div class="col-6 d-flex justify-content-center align-items-center">
-                                                                <div class="icon-big text-success text-center">
-                                                                    <i class="fas fa-users"></i>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6 d-flex justify-content-center align-items-center">
-                                                                <div class="numbers">
-                                                                    <p>Follower</p>
-                                                                    1567
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
+                                        <partial name="_ManageNav" />
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
@@ -226,25 +104,25 @@
 </section>
 
 @*<h4>@ViewData["Title"]</h4>
-<partial name="_StatusMessage" model="Model.StatusMessage" />
-<div class="row">
-        <div class="col-md-6">
-            <form id="profile-form" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Username"></label>
-                    <input asp-for="Username" class="form-control" disabled />
-                </div>
-                <div class="form-group">
-                    <label asp-for="Input.PhoneNumber"></label>
-                    <input asp-for="Input.PhoneNumber" class="form-control" />
-                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-                </div>
-                <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
-            </form>
+    <partial name="_StatusMessage" model="Model.StatusMessage" />
+    <div class="row">
+            <div class="col-md-6">
+                <form id="profile-form" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Username"></label>
+                        <input asp-for="Username" class="form-control" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.PhoneNumber"></label>
+                        <input asp-for="Input.PhoneNumber" class="form-control" />
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
         </div>
-    </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}*@
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }*@

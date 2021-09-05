@@ -2,20 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 using WebbShop.Data;
 using WebbShop.Models;
 
 namespace WebbShop.Pages.Admin
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,ProductManager")]
     public class AdminPageModel : PageModel
     {
+        private readonly INotyfService _notifikation;
         public readonly ApplicationDbContext _dbContext;
-        public AdminPageModel(ApplicationDbContext dbContext)
+        public AdminPageModel(ApplicationDbContext dbContext, INotyfService notyf)
         {
+            _notifikation = notyf;
             _dbContext = dbContext;
         }
 
@@ -24,16 +28,17 @@ namespace WebbShop.Pages.Admin
         public void OnGet()
         {
             products = _dbContext.product.ToList();
-            imageFiles = _dbContext.imagefiles.ToList();            
+            imageFiles = _dbContext.imagefiles.ToList();
         }
-        public IActionResult OnPost(int id)
+        public void OnPost(int id)
         {
             var product = _dbContext.product.First(c => c.Id == id);
             var image = _dbContext.imagefiles.First(i => i.product == product);
             _dbContext.imagefiles.Remove(image);
             _dbContext.product.Remove(product);
             _dbContext.SaveChanges();
-            return RedirectToPage("/Admin/Management/Confirm", new { text = "Your product is now deleted from database", id = 1 });
+            _notifikation.Success("Your product has been deleted from database", 3);
+            OnGet();
         }
     }
 }

@@ -11,7 +11,7 @@ using WebbShop.Models;
 
 namespace WebbShop.Pages.Admin.Management
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,ProductManager")]
     public class CreateCategoryModel : PageModel
     {
         public readonly ApplicationDbContext _dbContext;

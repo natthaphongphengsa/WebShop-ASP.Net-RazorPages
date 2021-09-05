@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using WebbShop.Data;
 using WebbShop.Models;
 using static System.Net.Mime.MediaTypeNames;
@@ -16,7 +17,7 @@ using static System.Net.Mime.MediaTypeNames;
 namespace WebbShop.Pages.Admin.Management
 {
     [BindProperties]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,ProductManager")]
     public class EditProductModel : PageModel
     {
         public readonly ApplicationDbContext _dbContext;
@@ -37,16 +38,14 @@ namespace WebbShop.Pages.Admin.Management
 
         public IFormFile Bild { get; set; }
         public List<SelectListItem> Category { get; set; }
-        private List<Category> categories { get; set; } = new List<Category>();
 
         public void OnGet(int id)
         {
-            categories = _dbContext.category.ToList();
-            var item = _dbContext.product.First(i => i.Id == id);
+            var item = _dbContext.product.Include(c=> c.Category).ToList().First(p => p.Id == id);
             Id = item.Id;
             Name = item.Name;
             Description = item.Description;
-            Price = item.Price;
+            Price = item.Price;            
             SelectedCategoryId = item.Category.Id;
             var img = _dbContext.imagefiles.First(c => c.product == item);
             if (img.DataFiles == null) 
@@ -60,7 +59,6 @@ namespace WebbShop.Pages.Admin.Management
                 Image = ImageUrl;
 
             }
-
             Category = _dbContext.category.Select(c => new SelectListItem()
             {
                 Text = c.Name,
@@ -84,7 +82,8 @@ namespace WebbShop.Pages.Admin.Management
                     var imageid = _dbContext.imagefiles.First(i => i.product.Id == id);
                     UpdateImageInDb(imageid.Id);
                 }
-                return RedirectToPage("/Admin/Management/Confirm", new { text = "Your product is now updateded", id = 1 });
+                return RedirectToPage("/Identity/Account/Admin/AdminPage");
+                //return RedirectToPage("/Admin/Management/Confirm", new { text = "Your product is now updateded", id = 1 });
             }
             OnGet(id);
             return Page();

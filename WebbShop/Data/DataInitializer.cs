@@ -18,11 +18,9 @@ namespace WebbShop.Data
         public static void SeedData(ApplicationDbContext dbContext)
         {
             dbContext.Database.Migrate();
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             SeedAdminAsync(dbContext);
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            //SeedCategory(dbContext);
-            //SeedProducts(dbContext);
+            SeedCategory(dbContext);
+            SeedProducts(dbContext);
         }
         public static void SeedProducts(ApplicationDbContext dbContext)
         {
@@ -72,6 +70,20 @@ namespace WebbShop.Data
         }
         public static async Task SeedAdminAsync(ApplicationDbContext dbContext)
         {
+            var Roles = new RoleStore<IdentityRole>(dbContext);
+            if (!dbContext.Roles.Any(r => r.Name == "Admin"))
+            {
+                await Roles.CreateAsync(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" });
+            }
+            if (!dbContext.Roles.Any(r => r.Name == "Customer"))
+            {
+                await Roles.CreateAsync(new IdentityRole { Name = "Customer", NormalizedName = "CUSTOMER" });
+            }
+            if (!dbContext.Roles.Any(r => r.Name == "ProductManager"))
+            {
+                await Roles.CreateAsync(new IdentityRole { Name = "ProductManager", NormalizedName = "PRODUCTMANAGER" });
+            }
+
             var Admin = new IdentityUser()
             {
                 UserName = "Admin@hotmail.com",
@@ -82,16 +94,6 @@ namespace WebbShop.Data
                 LockoutEnabled = false,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
-            var rolstore = new RoleStore<IdentityRole>(dbContext);
-            if (!dbContext.Roles.Any(r => r.Name == "Admin"))
-            {
-                await rolstore.CreateAsync(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" });
-            }
-            if (!dbContext.Roles.Any(r => r.Name == "Customer"))
-            {
-                await rolstore.CreateAsync(new IdentityRole { Name = "Customer", NormalizedName = "CUSTOMER" });
-            }
-
             if (!dbContext.Users.Any(u => u.UserName == Admin.UserName))
             {
                 var password = new PasswordHasher<IdentityUser>();
@@ -103,6 +105,31 @@ namespace WebbShop.Data
                 {
                     RoleId = dbContext.Roles.First( c=> c.Name == "Admin").Id,
                     UserId = Admin.Id
+                };
+                dbContext.UserRoles.Add(UserRole);
+            }
+            var ProductManager = new IdentityUser()
+            {
+                UserName = "ProductManager@hotmail.com",
+                NormalizedUserName = "PRODUCTMANAGER@HOTMAIL.COM",
+                NormalizedEmail = "PRODUCTMANAGER@HOTMAIL.COM",
+                Email = "ProductManager@hotmail.com",
+                EmailConfirmed = true,
+                LockoutEnabled = false,
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+
+            if (!dbContext.Users.Any(u => u.UserName == ProductManager.UserName))
+            {
+                var password = new PasswordHasher<IdentityUser>();
+                var hashed = password.HashPassword(ProductManager, "ProductManager@");
+                ProductManager.PasswordHash = hashed;
+
+                dbContext.Users.Add(ProductManager);
+                var UserRole = new IdentityUserRole<string>()
+                {
+                    RoleId = dbContext.Roles.First(c => c.Name == "ProductManager").Id,
+                    UserId = ProductManager.Id
                 };
                 dbContext.UserRoles.Add(UserRole);
             }

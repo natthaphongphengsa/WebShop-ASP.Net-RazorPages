@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebbShop.Data;
+using WebbShop.Services;
 
 namespace WebbShop
 {

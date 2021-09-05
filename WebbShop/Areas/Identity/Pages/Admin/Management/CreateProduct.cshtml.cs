@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -16,13 +17,14 @@ using WebbShop.Models;
 namespace WebbShop.Pages.Admin.Management
 {
     [BindProperties]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,ProductManager")]
     public class CreateProductModel : PageModel
     {
         public readonly ApplicationDbContext _dbContext;
-
-        public CreateProductModel(ApplicationDbContext dbContext)
+        private readonly INotyfService _notifikation;
+        public CreateProductModel(ApplicationDbContext dbContext, INotyfService notyf)
         {
+            _notifikation = notyf;
             _dbContext = dbContext;
         }
         public int Id { get; set; }
@@ -38,7 +40,6 @@ namespace WebbShop.Pages.Admin.Management
         public IFormFile Bild { get; set; }
 
         public List<SelectListItem> Category { get; set; }
-        //private List<Category> categories { get; set; } = new List<Category>();
 
         public string FileName { get; set; }
         public void OnGet()
@@ -63,9 +64,10 @@ namespace WebbShop.Pages.Admin.Management
                 _dbContext.product.Add(product);
                 _dbContext.SaveChanges();
                 SaveImageToDb(product.Id);
-                return RedirectToPage("/Admin/Management/Confirm", new { text = "Your new product is now added to database", id = 1 });
+                _notifikation.Success("Your new product is now added to database", 3);
+                return RedirectToPage("/Admin/AdminPage");                
             }
-            OnGet();
+            _notifikation.Warning("Please enter information!",3);
             return Page();
         }
         public void SaveImageToDb(int n)

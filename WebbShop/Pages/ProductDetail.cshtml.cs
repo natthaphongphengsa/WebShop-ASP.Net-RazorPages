@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using WebbShop.Data;
 using WebbShop.Models;
 using WebbShop.Session;
@@ -26,8 +27,6 @@ namespace WebbShop.Pages
             _dbContext = dbContext;
         }
 
-        public List<Category> categories = new List<Category>();
-
         public void OnGet(int id)
         {
             var count = HttpContext.Session.Get<List<Product>>("CartList");
@@ -37,13 +36,13 @@ namespace WebbShop.Pages
                 ViewData["Amount"] = count.Count();
 
             }
-            categories = _dbContext.category.ToList();
-            var item = _dbContext.product.FirstOrDefault(c => c.Id == id);
+            var item = _dbContext.product.Include(c =>c.Category).ToList().FirstOrDefault(c => c.Id == id);
             Id = item.Id;
             Name = item.Name;
             Description = item.Description;
             Price = item.Price;
-            Category = _dbContext.product.First(c => c.Id == id).Category;
+            Category = item.Category;
+
             var img = _dbContext.imagefiles.First(c => c.product == item);
             if (img.DataFiles == null)
             {
