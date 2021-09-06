@@ -18,9 +18,11 @@ namespace WebbShop.Data
         public static void SeedData(ApplicationDbContext dbContext)
         {
             dbContext.Database.Migrate();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             SeedAdminAsync(dbContext);
-            SeedCategory(dbContext);
-            SeedProducts(dbContext);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                              //SeedCategory(dbContext);
+                              //SeedProducts(dbContext);
         }
         public static void SeedProducts(ApplicationDbContext dbContext)
         {
@@ -38,7 +40,7 @@ namespace WebbShop.Data
                         Name = item.title,
                         Description = item.description,
                         Price = item.price,
-                        Category = dbContext.category.First(c => c.Name == item.category)
+                        Category = dbContext.category.FirstOrDefault(c => c.Name == item.category)
                     };
                     dbContext.product.Add(product);
                     dbContext.SaveChanges();

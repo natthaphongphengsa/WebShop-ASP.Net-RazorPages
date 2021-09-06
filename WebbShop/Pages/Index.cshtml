@@ -6,16 +6,24 @@
 @{
     ViewData["Title"] = "Home page";
 }
+<div class="d-inline">
+    <ul class="nav justify-content-center">
+        @foreach (var category in Model.categories)
+        {
+            <li class="nav-item p-2">
+                <a asp-page="/Category" asp-route-id="@category.Id" class="btn btn-light">@category.Name</a>
+            </li>
 
-<ul class="nav justify-content-center">
-    @foreach (var category in Model.categories)
-    {
-        <li class="nav-item p-2">
-            <a asp-page="/Category" asp-route-id="@category.Id" class="btn btn-light">@category.Name</a>
-        </li>
+        }
+    </ul>
+    <div class="nav justify-content-end">
+        <form method="post" asp-route-search="@Model.SeachInput">
+            <select name="id" asp-for="selectedFilter" onchange="this.form.submit()" class="form-select form-control m-md-4" aria-label="Default select example" asp-items="@Model.FilterList">
+            </select>
+        </form>
+    </div>
+</div>
 
-    }
-</ul>
 <div class="row">
     @foreach (var item in Model.products)
     {
@@ -45,18 +53,18 @@
                 <div class="text-right p-2">
                     <p class="card-text font-weight-bold">@item.Price kr</p>
                 </div>
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    if (!User.IsInRole("Admin"))
-                    {
-                        <a asp-page="/CartPage" asp-page-handler="AddToCart" asp-route-id="@item.Id" class="btn btn w-100 bg-primary" style="color:white;">Add to cart</a>
-                    }
-                }
-                else
+            </a>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                if (!User.IsInRole("Admin"))
                 {
                     <a asp-page="/CartPage" asp-page-handler="AddToCart" asp-route-id="@item.Id" class="btn btn w-100 bg-primary" style="color:white;">Add to cart</a>
                 }
-            </a>
+            }
+            else
+            {
+                <a asp-page="/CartPage" asp-page-handler="AddToCart" asp-route-id="@item.Id" class="btn btn w-100 bg-primary" style="color:white;">Add to cart</a>
+            }
         </div>
     }
 </div>

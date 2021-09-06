@@ -38,7 +38,7 @@ namespace WebbShop
                 config.Position = NotyfPosition.TopCenter;
             });
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Server=localhost; Database = WebbShop; Trusted_Connection = True;"));
-            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
             services.ConfigureApplicationCookie(config => { config.LoginPath = "/Account/Login"; });

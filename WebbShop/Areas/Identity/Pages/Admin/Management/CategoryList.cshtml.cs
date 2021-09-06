@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,8 +15,10 @@ namespace WebbShop.Pages.Admin.Management
     public class CategoryListModel : PageModel
     {
         public readonly ApplicationDbContext _dbContext;
-        public CategoryListModel(ApplicationDbContext dbContext)
+        private readonly INotyfService notyf;
+        public CategoryListModel(ApplicationDbContext dbContext, INotyfService notyfService)
         {
+            notyf = notyfService;
             _dbContext = dbContext;
         }
         public List<Category> categories { get; set; } = new List<Category>();
@@ -30,7 +33,8 @@ namespace WebbShop.Pages.Admin.Management
             var categories = _dbContext.category.First(c => c.Id == id);
             _dbContext.category.Remove(categories);
             _dbContext.SaveChanges();
-            return RedirectToPage("/Admin/Management/Confirm", new { text = "Your category is now deleted from database", id = 2 });
+            notyf.Success($"Category: {categories.Name} is now Deleted from database", 3);
+            return RedirectToPage("/Admin/Management/CategoryList");
         }
     }
 }

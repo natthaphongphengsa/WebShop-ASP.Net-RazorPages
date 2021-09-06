@@ -21,17 +21,17 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.categories)
+        @foreach (var category in Model.categories)
         {
             <tr>
-                <th scope="row">@item.Id</th>
+                <th scope="row">@category.Id</th>
                 <td>
-                    <b>@item.Name</b>
+                    <b>@category.Name</b>
                 </td>
                 <th>
-                    @if (item.products != null)
+                    @if (category.products != null)
                     {
-                        <p>@item.products.Count pc</p>
+                        <p>@category.products.Count pc</p>
                     }
                     else
                     {
@@ -40,7 +40,7 @@
                 </th>
                 <td>
                     <form method="post">
-                        <button type="submit" name="id" value="@item.Id" class="btn btn-danger">Delete</button>
+                        <button type="submit" name="id" value="@category.Id" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this category: @category.Name')">Delete</button>
                     </form>
                 </td>
             </tr>

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,8 +22,10 @@ namespace WebbShop.Pages.Admin.Management
     public class EditProductModel : PageModel
     {
         public readonly ApplicationDbContext _dbContext;
-        public EditProductModel(ApplicationDbContext dbContext)
+        private readonly INotyfService notyf;
+        public EditProductModel(ApplicationDbContext dbContext, INotyfService notyfService)
         {
+            notyf = notyfService;
             _dbContext = dbContext;
         }
         public int Id { get; set; }
@@ -82,10 +85,13 @@ namespace WebbShop.Pages.Admin.Management
                     var imageid = _dbContext.imagefiles.First(i => i.product.Id == id);
                     UpdateImageInDb(imageid.Id);
                 }
-                return RedirectToPage("/Identity/Account/Admin/AdminPage");
+
+                notyf.Success("Your product is now updated", 3);
+                return RedirectToPage("/Admin/AdminPage");
                 //return RedirectToPage("/Admin/Management/Confirm", new { text = "Your product is now updateded", id = 1 });
             }
             OnGet(id);
+            notyf.Error("Sorry something went wrong. Try again!", 3);
             return Page();
         }
         public void UpdateImageInDb(int id)
