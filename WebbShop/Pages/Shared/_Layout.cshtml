@@ -27,6 +27,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
+                        @await Component.InvokeAsync("Category")
                         <li class="nav-item">
                             <form method="get" action="/SearchProducts" class="d-flex">
                                 <input type="text" class="form-control" name="searchinput" />

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebbShop.Areas.Identity.Pages.Account.Manage
 {
+  
     public partial class IndexModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;

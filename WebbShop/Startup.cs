@@ -41,8 +41,8 @@ namespace WebbShop
             services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-            services.ConfigureApplicationCookie(config => { config.LoginPath = "/Account/Login"; });
-            services.ConfigureApplicationCookie(c => { c.AccessDeniedPath = "/AccessDenied"; });
+            services.ConfigureApplicationCookie(config => { config.LoginPath = "/Identity/Account/Login"; });
+            services.ConfigureApplicationCookie(c => { c.AccessDeniedPath = "/Identity/Account/AccessDenied"; });
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
@@ -81,7 +81,6 @@ namespace WebbShop
             app.UseRouting();
 
             app.UseSession();
-
 
             app.UseAuthentication();
 
