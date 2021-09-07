@@ -19,7 +19,7 @@ namespace WebbShop.Pages.Admin.Management
         [BindProperty]
         [Required(ErrorMessage = "Category name is required!")]
         [DataType(DataType.Text)]
-        [RegularExpression("^[a-zA-Z]*$",ErrorMessage = "Only text allowed!")]
+        [RegularExpression("^[a-zA-Z]*$",ErrorMessage = "Only text is allowed!")]
         public string Name { get; set; }
 
         private readonly INotyfService notyf;
