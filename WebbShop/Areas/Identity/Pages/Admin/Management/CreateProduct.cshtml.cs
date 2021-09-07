@@ -67,6 +67,7 @@ namespace WebbShop.Pages.Admin.Management
                 _notifikation.Success("Your new product is now added to database", 3);
                 return RedirectToPage("/Admin/AdminPage");                
             }
+            OnGet();
             _notifikation.Warning("Please enter information!",3);
             return Page();
         }
