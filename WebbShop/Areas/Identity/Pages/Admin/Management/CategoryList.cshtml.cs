@@ -28,12 +28,21 @@ namespace WebbShop.Pages.Admin.Management
             categories = _dbContext.category.ToList();
             products = _dbContext.product.ToList();
         }
-        public IActionResult OnPost(int id)
+        public IActionResult OnPostAsync(int id)
         {
             var categories = _dbContext.category.First(c => c.Id == id);
             _dbContext.category.Remove(categories);
-            _dbContext.SaveChanges();
-            notyf.Success($"Category: {categories.Name} is now Deleted from database", 3);
+            try
+            {
+                var result = _dbContext.SaveChanges();
+                notyf.Success($"Category: {categories.Name} is now Deleted from database", 3);
+                return RedirectToPage("/Admin/Management/CategoryList");
+            }
+            catch (Exception ex)
+            {
+                notyf.Warning($"Failed to delete Category. You can only delete category which has non product connected", 10);
+            }
+
             return RedirectToPage("/Admin/Management/CategoryList");
         }
     }
