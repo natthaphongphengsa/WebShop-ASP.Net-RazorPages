@@ -1,11 +1,9 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using WebbShop.Data;
 using WebbShop.Models;
 using WebbShop.Session;
@@ -36,7 +34,7 @@ namespace WebbShop.Pages
                 ViewData["Amount"] = count.Count();
 
             }
-            var item = _dbContext.product.Include(c =>c.Category).ToList().FirstOrDefault(c => c.Id == id);
+            var item = _dbContext.product.Include(c => c.Category).ToList().FirstOrDefault(c => c.Id == id);
             Id = item.Id;
             Name = item.Name;
             Description = item.Description;

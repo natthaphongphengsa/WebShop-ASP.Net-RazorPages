@@ -1,15 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebbShop.Data;
 using WebbShop.Models;
 
 namespace WebbShop.ViewComponents
 {
     [ViewComponent(Name = "Category")]
-    public class CategoryViewComponent: ViewComponent
+    public class CategoryViewComponent : ViewComponent
     {
         public readonly ApplicationDbContext _dbContext;
         public CategoryViewComponent(ApplicationDbContext dbContext)

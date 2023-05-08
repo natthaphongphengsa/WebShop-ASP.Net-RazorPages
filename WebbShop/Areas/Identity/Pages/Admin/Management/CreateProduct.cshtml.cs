@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Linq;
 using WebbShop.Data;
 using WebbShop.Models;
 
@@ -65,10 +62,10 @@ namespace WebbShop.Pages.Admin.Management
                 _dbContext.SaveChanges();
                 SaveImageToDb(product.Id);
                 _notifikation.Success("Your new product is now added to database", 3);
-                return RedirectToPage("/Admin/AdminPage");                
+                return RedirectToPage("/Admin/AdminPage");
             }
             OnGet();
-            _notifikation.Warning("Please enter information!",3);
+            _notifikation.Warning("Please enter information!", 3);
             return Page();
         }
         public void SaveImageToDb(int n)

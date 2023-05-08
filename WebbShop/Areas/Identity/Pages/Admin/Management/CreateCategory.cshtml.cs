@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using WebbShop.Data;
 using WebbShop.Models;
 
@@ -19,7 +16,7 @@ namespace WebbShop.Pages.Admin.Management
         [BindProperty]
         [Required(ErrorMessage = "Category name is required!")]
         [DataType(DataType.Text)]
-        [RegularExpression("^[a-zA-Z]*$",ErrorMessage = "Only text is allowed!")]
+        [RegularExpression("^[a-zA-Z]*$", ErrorMessage = "Only text is allowed!")]
         public string Name { get; set; }
 
         private readonly INotyfService notyf;

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -13,6 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 using WebbShop.Data;
 
 namespace WebbShop.Areas.Identity.Pages.Account
@@ -76,7 +75,7 @@ namespace WebbShop.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
-            {                               
+            {
                 if (!_dbContext.Users.Any(u => u.UserName == Input.Email))
                 {
                     var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
@@ -116,7 +115,7 @@ namespace WebbShop.Areas.Identity.Pages.Account
                     {
                         ModelState.AddModelError("Error", error.Description);
                     }
-                }                
+                }
             }
 
             // If we got this far, something failed, redisplay form

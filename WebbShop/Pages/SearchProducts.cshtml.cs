@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.Linq;
 using WebbShop.Data;
 using WebbShop.Models;
 using WebbShop.Session;
@@ -22,7 +20,7 @@ namespace WebbShop.Pages
         public List<SelectList> selected { get; set; } = new List<SelectList>();
         public List<SelectListItem> FilterList { get; set; } = new List<SelectListItem>();
 
-        public int selectedFilter { get; set; } 
+        public int selectedFilter { get; set; }
         public string SeachInput { get; set; }
 
         public SearchProductsModel(ApplicationDbContext dbContext)
@@ -54,7 +52,7 @@ namespace WebbShop.Pages
             switch (id)
             {
                 case 0:
-                    products = _dbContext.product.OrderBy(c => c.Price).Where(c => c.Name.Contains(search)).ToList();                    
+                    products = _dbContext.product.OrderBy(c => c.Price).Where(c => c.Name.Contains(search)).ToList();
                     break;
                 case 1:
                     products = _dbContext.product.OrderByDescending(c => c.Price).Where(c => c.Name.Contains(search)).ToList();

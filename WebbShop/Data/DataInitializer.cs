@@ -8,7 +8,6 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using WebbShop.Data;
 using WebbShop.Models;
 
 namespace WebbShop.Data
@@ -35,7 +34,7 @@ namespace WebbShop.Data
             {
                 if (!dbContext.product.Any(c => c.Name == item.title))
                 {
-                    var product  = new Product()
+                    var product = new Product()
                     {
                         Name = item.title,
                         Description = item.description,
@@ -44,10 +43,10 @@ namespace WebbShop.Data
                     };
                     dbContext.product.Add(product);
                     dbContext.SaveChanges();
-                    dbContext.imagefiles.Add(new ImageFile() 
+                    dbContext.imagefiles.Add(new ImageFile()
                     {
-                       Filename = item.image,
-                       product = product,
+                        Filename = item.image,
+                        product = product,
                     });
                     dbContext.SaveChanges();
                 }
@@ -103,9 +102,9 @@ namespace WebbShop.Data
                 Admin.PasswordHash = hashed;
 
                 dbContext.Users.Add(Admin);
-                var UserRole = new IdentityUserRole<string>() 
+                var UserRole = new IdentityUserRole<string>()
                 {
-                    RoleId = dbContext.Roles.First( c=> c.Name == "Admin").Id,
+                    RoleId = dbContext.Roles.First(c => c.Name == "Admin").Id,
                     UserId = Admin.Id
                 };
                 dbContext.UserRoles.Add(UserRole);
